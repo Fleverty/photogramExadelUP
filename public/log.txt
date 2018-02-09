@@ -1,0 +1,12 @@
+commit 17c81057ee80d189d47cd29559ea03f0843d9da5 (HEAD -> master)
+Author: Vlad Bogatko <bogatko.official@gmail.com>
+Date:   Fri Feb 9 13:47:44 2018 +0300
+
+    add status.txt
+
+commit be407ba4d4588ca86453e555491345ea0cdff6eb
+Author: Vlad Bogatko <bogatko.official@gmail.com>
+Date:   Fri Feb 9 13:45:33 2018 +0300
+
+    add .gitignore
+
