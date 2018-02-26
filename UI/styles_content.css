@@ -1,0 +1,157 @@
+.main{
+  margin-top: 5vw;
+  height: 89.9%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  background-color: rgb(241, 241, 239);
+}
+
+.content {
+  height: 100%;
+  width: 60vw;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Calibri;
+}
+
+.post{
+  height: auto;
+  width: 40vw;
+  margin-top: 4%;
+  margin-bottom: 3%;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.headerpost {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5%;
+  font-size: 1vw;
+}
+
+.username {
+  font-weight:bold;
+}
+
+.time{
+  color: grey;
+}
+
+.photo IMG{
+  height: auto;
+  width: 100%;
+}
+
+.likemenu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1%;
+  border-bottom: 1px solid black;
+  height: 2.5vw;
+  font-size: 2vw;
+}
+
+.like{
+  height: 1vw;
+  width: 5vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.like_icon {
+  width: 2.6vw;
+  height: 2.4vw;
+}
+
+.like_icon IMG {
+  width: 100%;
+  height: 100%;
+}
+
+.count {
+  font-weight:bold;
+}
+
+.editdel {
+  height: 3vw;
+  width: 15vw;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+}
+
+.edit button {
+  background-color: #008080;
+  border: 1px solid rgb(56,126,245); /* Green border */
+  color: black; /* White text */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+  height: 2.5vw;
+  width: 7vw;
+  font-size: 1.2vw;
+}
+.delete button {
+  background-color: rgb(232,75,57); /* Green background */
+  border: 1px solid rgb(232,75,57); /* Green border */
+  color: black; /* White text */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+  height: 2.5vw;
+  width: 7vw;
+  font-size: 1.2vw;
+}
+
+
+.hashtags {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: blue;
+  padding: 1%;
+  font-family: "Hashtag";
+  font-size: 2.5vw;
+  height: 1vw;
+}
+
+.hashtag {
+  margin-right: 0.7vw;
+}
+
+.description {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 1vw;
+  padding: 1.5%;
+  font-size: 1vw;
+}
+
+.about {
+  margin-left: 0.7vw;
+}
+
+.btnmore {
+  margin-bottom: 3%;
+}
+
+.btnmore button {
+  background-color: #008080; 
+  border: 1px solid #008080; 
+  color: black; 
+  cursor: pointer; 
+  float: left; 
+  height: 3vw;
+  width: 20vw;
+  font-size: 1vw;
+}

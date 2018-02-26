@@ -1,0 +1,56 @@
+
+.header {
+  width: 100%;
+  height: 5vw;
+  background-color: #008080;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  font-family:"Billabong";
+  position:fixed;
+  margin-right: 5vw;
+}
+
+.header_icon {
+  height: 90%;
+  width: 10%;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.icon {
+  width: 37%;
+  height: 80%;
+}
+
+.icon IMG {
+  width: 100%;
+}
+
+.name {
+  font-size: 4vw;
+  width: 48%;
+  height: 90%;
+  border-left: black solid 0.1vw;
+}
+
+.header_name {
+  height: 100%;
+  font-size: 5vw;
+}
+
+.login {
+  font-weight:bold;
+  font-size: 2vw;
+}
+
+A{
+  text-decoration: none;
+  color: black;
+}
+
+

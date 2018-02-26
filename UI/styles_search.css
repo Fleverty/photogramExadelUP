@@ -1,0 +1,56 @@
+#skm {
+    background-color: tan;
+}
+.search {
+    height: 100%;
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+}
+.btn {
+    margin-top: 6%;
+    margin-left: 6%;
+}
+.btn button {
+    background-color:#008080; 
+    border: 1px solid #008080; 
+    color: black; 
+    cursor: pointer; 
+    float: left; 
+    height: 3.4vw;
+    width: 24vw;
+    font-size: 2.1vw;
+}
+
+.searchbar {
+    background-color: white;
+    height: 4%;
+    width: 60%;
+    margin-top: 6%;
+    margin-left: 6%;
+    font-size:1vw;
+}
+
+.hashtagtable {
+    width: 40%;
+    height: 40%;
+    margin-top: 6%;
+    margin-left: 6%;
+    display: flex;
+    flex-flow: column wrap;
+    font-family:"Hashtag";
+    font-size: 4.5vw;
+}
+
+.toptag {
+    color: rgb(43,72,162);
+}
+
+.footer {
+    width: 25vw;
+    height: 5vw;
+    margin-top: 6%;
+    margin-left: 6%; 
+    font-size: 1.1vw;
+}
