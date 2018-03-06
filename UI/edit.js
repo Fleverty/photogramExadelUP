@@ -89,6 +89,12 @@ const SCHEMA = {
   getPhotoPost = id => photoPosts.find(photoPost => photoPost.id === id);
 
 
+
+
+
+
+
+
   validatePhotoPost = photoPost => {
     const fieldsToValidate = Object.keys(SCHEMA.PHOTOPOST);
     const photoPostFields = Object.keys(photoPost);
