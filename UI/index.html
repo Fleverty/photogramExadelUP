@@ -9,15 +9,15 @@
   </head>
 
   <body>
-    <div id="root">
-      <div id = "qwer">
+    <div class="root">
+      <div class = "qwer">
         <div class="header"> 
           <div class="header_icon">
             <div class = "icon"><img src = http://www.kalgilifestyle.com/wp-content/themes/Creta_Full/creta/images/instagram-icon.png></div>
-            <div class = "name"><a href = "file:///E:/photogramExadelUP/UI/index.html">Ph</a></div>
+            <div class = "name"><a href = "./index.html">Ph</a></div>
           </div>
           <div class = "header_name">
-            <a href = "file:///E:/photogramExadelUP/UI/index.html">PHOTOGRAM</a>      
+            <a href = "./index.html">PHOTOGRAM</a>      
           </div>
           <div class="login">
             ernesto_gavara
@@ -25,112 +25,30 @@
         </div>
       </div>
       <div class = "main">
-        <div class="content"> 
-          <div class = "post">
-            <div class = "headerpost">
-              <div class = "username">ernesto_gavara</div>
-              <div class = "time">12:34 31.07.2019</div> 
-            </div>
-            <div class = "photo"><img src = "https://html5box.com/html5lightbox/images/skynight.jpg"> </div>
-            <div class = "likemenu">
-              <div class = "like">
-                <div class = "like_icon"><img src = "http://jetgram.ru/wp-content/uploads/2015/07/heart-icon-e1437983700774.png"></div>
-                <div class = "count">30</div>
-              </div>
-              <div class = "editdel">
-                  <div class = "edit"><button>Edit</button></div>
-                  <div class = "delete"><button>Delete</button></div>
-              </div>
-            </div>
-            <div class = "hashtags">
-              <div class = "hashtag">#kek</div>
-              <div class = "hashtag">#kek</div>
-              <div class = "hashtag">#kek</div>
-              <div class = "hashtag">#kek</div>
-              <div class = "hashtag">#kek</div>
-              <div class = "hashtag">#kek</div>
-              <div class = "hashtag">#kek</div>
-              <div class = "hashtag">#kek</div>
-            </div>
-            <div class = "description">
-              <div class = "username">ernesto_gavara</div>
-              <div class = "about">About this post</div>
-            </div>
-          </div>
-          <div class = "post">
-              <div class = "headerpost">
-                <div class = "username">ernesto_gavara</div>
-                <div class = "time">12:34 31.07.2019</div> 
-              </div>
-              <div class = "photo"><img src = "https://html5box.com/html5lightbox/images/skynight.jpg"> </div>
-              <div class = "likemenu">
-                <div class = "like">
-                  <div class = "like_icon"><img src = "http://jetgram.ru/wp-content/uploads/2015/07/heart-icon-e1437983700774.png"></div>
-                  <div class = "count">30</div>
-                </div>
-                <div class = "editdel">
-                    <div class = "edit"><button>Edit</button></div>
-                    <div class = "delete"><button>Delete</button></div>
-                </div>
-              </div>
-              <div class = "hashtags">
-                <div class = "hashtag">#kek</div>
-                <div class = "hashtag">#kek</div>
-                <div class = "hashtag">#kek</div>
-                <div class = "hashtag">#kek</div>
-                <div class = "hashtag">#kek</div>
-                <div class = "hashtag">#kek</div>
-                <div class = "hashtag">#kek</div>
-                <div class = "hashtag">#kek</div>
-              </div>
-              <div class = "description">
-                <div class = "username">ernesto_gavara</div>
-                <div class = "about">About this post</div>
-              </div>
-            </div>
-            <div class = "post">
-                <div class = "headerpost">
-                  <div class = "username">ernesto_gavara</div>
-                  <div class = "time">12:34 31.07.2019</div> 
-                </div>
-                <div class = "photo"><img src = "https://html5box.com/html5lightbox/images/skynight.jpg"> </div>
-                <div class = "likemenu">
-                  <div class = "like">
-                    <div class = "like_icon"><img src = "http://jetgram.ru/wp-content/uploads/2015/07/heart-icon-e1437983700774.png"></div>
-                    <div class = "count">30</div>
-                  </div>
-                  <div class = "editdel">
-                      <div class = "edit"><button>Edit</button></div>
-                      <div class = "delete"><button>Delete</button></div>
-                  </div>
-                </div>
-                <div class = "hashtags">
-                  <div class = "hashtag">#kek</div>
-                  <div class = "hashtag">#kek</div>
-                  <div class = "hashtag">#kek</div>
-                  <div class = "hashtag">#kek</div>
-                  <div class = "hashtag">#kek</div>
-                  <div class = "hashtag">#kek</div>
-                  <div class = "hashtag">#kek</div>
-                  <div class = "hashtag">#kek</div>
-                </div>
-                <div class = "description">
-                  <div class = "username">ernesto_gavara</div>
-                  <div class = "about">About this post</div>
-                </div>
-              </div>
+        <div class ="content">
             <div class = "btnmore">
               <button>Show more</button>
             </div>
         </div>
         <div id = "skm"><div class ="search">
           <div class = "btn">
-            <button >+ Add new post</button>
+            <button>+ Add new post</button>
           </div>
           <div class = "searchbar">
-            <a>Searchbar will be here, soon...</a>
-            <script src = "edit.js"></script>
-            <script src = "config.js"></script>
+            <div class = "date-bar">
+            <input type = "date" class="date-search" placeholder="From...">
+            <input type = "date" class="date-search" placeholder="To...">
+            <input type = "button" value = "Submit" class = "submit"> 
+            </div>
+            <div class = "hashtag-bar">
+            <input type = "text"  class="search-hashtags" placeholder="Search by hashtags">
+            <input type = "button" value = "Submit" class = "submit">
+            </div> 
+            <div class = "author-bar">
+            <select  class = "author-select" ></select>
+            <input type = "button" value = "Submit" class = "submit">
+            </div>            
+            </select>
           </div>
           <div class = "hashtagtable">
             <div class = "toptag">#kek</div>
@@ -148,5 +66,10 @@
       </div>
       </div>
     </div>
+    <script src = "./JS/schema.js"></script>
+    <script src = "./JS/photoPosts.js"></script>
+    <script src = "./JS/postService.js"></script>
+    <script src = "./JS/domAPI.js"></script>
+    <script src = "./JS/edit.js"></script>
   </body>
 </html>
