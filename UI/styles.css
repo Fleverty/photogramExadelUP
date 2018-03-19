@@ -1,6 +1,6 @@
 html,
 body, 
-#root {
+.root {
   height: 100%;
   background-color: rgb(241, 241, 239);
   overflow: auto;
@@ -12,14 +12,14 @@ body {
 
 @font-face {
   font-family: "Billabong"; 
-  src: url("file:///E:/photogramExadelUP/UI/fonts/Billabong.ttf") format("truetype"); 
+  src: url("./fonts/Billabong.ttf") format("truetype"); 
   font-style: normal; 
   font-weight: normal; 
   } 
 
 @font-face {
   font-family: "Hashtag"; 
-  src: url("file:///E:/photogramExadelUP/UI/fonts/Hashtag.ttf") format("truetype"); 
+  src: url("./fonts/Hashtag.ttf") format("truetype"); 
   font-style: normal; 
   font-weight: normal; 
   } 
