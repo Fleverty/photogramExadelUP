@@ -2,13 +2,49 @@
 <html>
   
   <head>
-    <link rel="stylesheet" href="./styles.css"></link>
-    <link rel="stylesheet" href="./styles_header.css"></link>
-    <link rel="stylesheet" href="./styles_content.css"></link>
-    <link rel="stylesheet" href="./styles_search.css"></link>
+    <link rel="stylesheet" href="./css-styles/styles.css"></link>
+    <link rel="stylesheet" href="./css-styles/styles_header.css"></link>
+    <link rel="stylesheet" href="./css-styles/styles_content.css"></link>
+    <link rel="stylesheet" href="./css-styles/styles_search.css"></link>
+    <link rel ="stylesheet" href="./css-styles/styles-addform.css"></link>
+    <link rel ="stylesheet" href="./css-styles/styles-signform.css"></link>
   </head>
 
   <body>
+      <!--<div class = "addform">
+          <div class = "header-addform"> Add new post</div>
+          <div class = "main-addform">
+            <div class = "label-1">
+              <div class = "image">
+                <input class="imagelink" type="text" placeholder="Link..."/>
+                <input type = "button" value = "Submit" class = "submit">
+              </div>
+              <input class="hashtag-input" type="text" placeholder="Hashtags..."/>
+              <textarea class="description-input" placeholder="Write something about photo..."></textarea>
+            </div>
+            <div class = "label-2">
+                <div class="detail-news-photo"><img src = "https://st2.depositphotos.com/1950939/7068/v/950/depositphotos_70683277-stock-illustration-grey-strokes-background.jpg">
+                </div>
+                <div class = "okcansel">
+                  <div class = "addbutton"><button>Add</button></div>
+                  <div class = "canselbutton"><button>Cansel</button></div>
+                </div>
+            </div>
+          </div>            
+        </div>-->
+    <!--<div class = "signform">
+      <div class = "header-signform">
+        Sign in
+      </div>
+      <div class = "main-signform">
+          <div class = "loginform"><div>Login : </div><input class="inputlogin" type="text" placeholder="Login..."/></div>
+          <div class = "passwordform"><div>Password : </div><input class="password" type="text" placeholder="Password..."/></div>
+      </div>
+      <div class = "okcansel">
+          <div class = "addbutton"><button>Sign in</button></div>
+          <div class = "canselbutton"><button>Cansel</button></div>
+      </div>
+    </div>-->
     <div class="root">
       <div class = "qwer">
         <div class="header"> 
@@ -20,11 +56,11 @@
             <a href = "./index.html">PHOTOGRAM</a>      
           </div>
           <div class="login">
-            ernesto_gavara
           </div>
         </div>
       </div>
       <div class = "main">
+          
         <div class ="content">
             <div class = "btnmore">
               <button>Show more</button>
@@ -46,7 +82,7 @@
             </div> 
             <div class = "author-bar">
             <select  class = "author-select" ></select>
-            <input type = "button" value = "Submit" class = "submit">
+            <input type = "button" value = "Submit" class = "submit-author">
             </div>            
             </select>
           </div>
@@ -71,5 +107,8 @@
     <script src = "./JS/postService.js"></script>
     <script src = "./JS/domAPI.js"></script>
     <script src = "./JS/edit.js"></script>
+    <script src = "./JS/listeners-addform.js"></script>
+    <script src = "./JS/listeners-signform.js"></script>
+    <script src = "./JS/listeners-filters.js"></script>
   </body>
 </html>

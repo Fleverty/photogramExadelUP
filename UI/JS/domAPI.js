@@ -35,8 +35,8 @@
       return view;
     } 
     
-    domService.showPosts = () => {
-      postService.getPhotoPosts(0, 10).forEach(function(elem) {
+    domService.showPosts = (filter) => {
+      postService.getPhotoPosts(0, 10, filter).forEach(function(elem) {
         let detailPhotoPost = document.createElement('div');
         detailPhotoPost.id = elem.id;
         detailPhotoPost.className = "post"
@@ -54,6 +54,12 @@
         place.innerHTML += '<option>' + element + '</option>' 
       });
       
+    }
+
+    domService.clean = () => {
+      document.querySelectorAll("div.post").forEach(function(elem) {
+        domService.deletePost(elem.id);
+      });
     }
     
     domService.addPost = (photoPost) => {

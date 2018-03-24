@@ -1,4 +1,4 @@
-!function(domService, postsService) {
+!function(domService, postService) {
   domService.showPosts();
   domService.userConfig(domService.user);
 
@@ -8,5 +8,5 @@
   test.editPhotoPost = (id, editField) => {domService.editPost(id, editField)};
   test.removePhotoPost = (id) => {domService.deletePost(id)};
   
-}(window.domService, window.postsService)
+}(window.domService, window.postService)
 

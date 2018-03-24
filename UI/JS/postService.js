@@ -15,20 +15,20 @@
           const filterFields = Object.keys(filter).filter(filterField => {
               return window.SCHEMA.FIELDS_VALID_TO_FILTER.indexOf(filterField) !== -1
           });
-    
+          var filteredPhotoPosts = [];
           if(filterFields.indexOf("hashtags") !== -1){
             var filteredByHashtag = window.photoPosts.filter(photoPost => {
               return  postService.compareHashtag(filter.hashtags, photoPost.hashtags);
             } )
             filterFields.splice(filterFields.indexOf("hashtags"), 1);
-            var filteredPhotoPosts = filteredByHashtag.filter(photoPost => {
+            filteredPhotoPosts = filteredByHashtag.filter(photoPost => {
               return filterFields.every(filterField => photoPost[filterField] === filter[filterField]);
             });
           }
     
           
           if(filterFields.indexOf("hashtags") === -1){
-            const filteredPhotoPosts = window.photoPosts.filter(photoPost => {
+            filteredPhotoPosts = window.photoPosts.filter(photoPost => {
               return filterFields.every(filterField => photoPost[filterField] === filter[filterField]);
           });
           }
