@@ -33,7 +33,9 @@
         let hashtag = [];
         hashtag =  document.querySelector("input.hashtag-input").value.split(", ");
         let description = document.querySelector('textarea.description-input').value;
-        if(imagelink === "" || description === "") return false;
+        if(imagelink === "" || description === "") {
+            return false;
+        }
         domService.addPost({id:'5', description: description, createdAt: "2018-12-23", author: domService.user, photoLink: imagelink, hashtags: hashtag, likes : []})
         pageListener.deleteAddForm();
     }
@@ -49,6 +51,7 @@
         while(target.className !== 'post') target = target.parentNode;
         domService.deletePost(target.id);
     }
+
     pageListener.detailSignForm = () => {
         let detailSignForm = "<div class = \"signform\">" + 
         "<div class = \"header-signform\">Sign in</div>" + 
@@ -63,18 +66,24 @@
         document.body.innerHTML += detailSignForm;
         
     }
+
     pageListener.deleteSignForm = () => {
         document.body.removeChild(document.querySelector("div.signform"));
     }
 
     pageListener.signIn = () => {
         let user = document.querySelector("input.inputlogin").value;
-        if(!document.querySelector("input.password").value === '1111') return false;
-        if(user === "") return false;
+        if(!document.querySelector("input.password").value === '1111') {
+            return false;
+        }
+        if(user === "") {
+            return false;
+        } 
         domService.user = user;
         domService.userConfig(domService.user);
         pageListener.deleteSignForm();
     }
+
     pageListener.filterByAuthor = () => {
         let author = document.querySelector("select.author-select").value;
         domService.clean();
@@ -99,10 +108,13 @@
 
     pageListener.detailEditForm = (event) => {
         let target = event.target;
-        while(target.className !== 'post') target = target.parentNode;
+        while(target.className !== 'post') {
+            target = target.parentNode;
+        }
         let photoPost = postService.getPhotoPost(target.id);
         let description = photoPost.description;
         let hashtags = photoPost.hashtags.join(', ');
+        
         let detailEditForm = "<div class = \"addform\">" + 
         "<div class = \"header-addform\"> Edit post</div>" + 
         "<div class = \"main-addform\">" + 
@@ -121,6 +133,7 @@
                 "<div class = \"addbutton\" onclick = pageListener.editPost(" + target.id +")><button>Edit</button></div>" + 
                 "<div class = \"canselbutton\" onclick = 'pageListener.deleteAddForm()'><button>Cansel</button></div>" +
               "</div></div></div></div>";
+
         document.body.innerHTML += detailEditForm;
     }
 

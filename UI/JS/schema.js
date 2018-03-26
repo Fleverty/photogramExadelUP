@@ -33,4 +33,4 @@ const SCHEMA = {
     FIELDS_VALID_TO_UPDATE: ['description', 'photoLink', 'hashtags'],
   }
 
-  window.SCHEMA = SCHEMA;
+window.SCHEMA = SCHEMA;

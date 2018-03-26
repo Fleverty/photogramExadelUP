@@ -64,4 +64,7 @@ var photoPosts = [
   }
 ];
 
+var photoPosts1 = JSON.parse(localStorage.getItem('posts'))
+if(photoPosts1 !== null) photoPosts = photoPosts1;
+
 window.photoPosts = photoPosts;
