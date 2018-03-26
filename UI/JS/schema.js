@@ -10,7 +10,7 @@ const SCHEMA = {
       },
       CREATEDAT: {
         NAME: 'createdAt',
-        TYPE: 'object'
+        TYPE: 'string'
       },
       AUTHOR: {
         NAME: 'author',

@@ -3,7 +3,7 @@
 }
 .search {
     height: 100%;
-    width: 40vw;
+    width: 38vw;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -43,7 +43,7 @@
 }
 
 .date-search {
-    width: 9.5vw;
+    width: 19.7vw;
     height: 1.2vw;
     font-size: 0.9vw;
 }

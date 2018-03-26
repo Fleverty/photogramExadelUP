@@ -11,40 +11,6 @@
   </head>
 
   <body>
-      <!--<div class = "addform">
-          <div class = "header-addform"> Add new post</div>
-          <div class = "main-addform">
-            <div class = "label-1">
-              <div class = "image">
-                <input class="imagelink" type="text" placeholder="Link..."/>
-                <input type = "button" value = "Submit" class = "submit">
-              </div>
-              <input class="hashtag-input" type="text" placeholder="Hashtags..."/>
-              <textarea class="description-input" placeholder="Write something about photo..."></textarea>
-            </div>
-            <div class = "label-2">
-                <div class="detail-news-photo"><img src = "https://st2.depositphotos.com/1950939/7068/v/950/depositphotos_70683277-stock-illustration-grey-strokes-background.jpg">
-                </div>
-                <div class = "okcansel">
-                  <div class = "addbutton"><button>Add</button></div>
-                  <div class = "canselbutton"><button>Cansel</button></div>
-                </div>
-            </div>
-          </div>            
-        </div>-->
-    <!--<div class = "signform">
-      <div class = "header-signform">
-        Sign in
-      </div>
-      <div class = "main-signform">
-          <div class = "loginform"><div>Login : </div><input class="inputlogin" type="text" placeholder="Login..."/></div>
-          <div class = "passwordform"><div>Password : </div><input class="password" type="text" placeholder="Password..."/></div>
-      </div>
-      <div class = "okcansel">
-          <div class = "addbutton"><button>Sign in</button></div>
-          <div class = "canselbutton"><button>Cansel</button></div>
-      </div>
-    </div>-->
     <div class="root">
       <div class = "qwer">
         <div class="header"> 
@@ -55,7 +21,7 @@
           <div class = "header_name">
             <a href = "./index.html">PHOTOGRAM</a>      
           </div>
-          <div class="login">
+          <div class="login" onclick = "window.pageListener.detailSignForm()">
           </div>
         </div>
       </div>
@@ -72,21 +38,20 @@
           </div>
           <div class = "searchbar">
             <div class = "date-bar">
-            <input type = "date" class="date-search" placeholder="From...">
-            <input type = "date" class="date-search" placeholder="To...">
-            <input type = "button" value = "Submit" class = "submit"> 
+            <input type = "date" class="date-search">
+            <input type = "button" value = "Submit" class = "submit" onclick="window.pageListener.filterByDate()"> 
             </div>
             <div class = "hashtag-bar">
             <input type = "text"  class="search-hashtags" placeholder="Search by hashtags">
-            <input type = "button" value = "Submit" class = "submit">
+            <input type = "button" value = "Submit" class = "submit-hashtags" onclick="window.pageListener.filterByHashtags()">
             </div> 
             <div class = "author-bar">
             <select  class = "author-select" ></select>
-            <input type = "button" value = "Submit" class = "submit-author">
+            <input type = "button" value = "Submit" class = "submit-author" onclick="window.pageListener.filterByAuthor()">
             </div>            
             </select>
           </div>
-          <div class = "hashtagtable">
+          <div class = "hashtagtable" >
             <div class = "toptag">#kek</div>
             <div class = "toptag">#kek</div>
             <div class = "toptag">#kek</div>
@@ -102,13 +67,11 @@
       </div>
       </div>
     </div>
-    <script src = "./JS/schema.js"></script>
-    <script src = "./JS/photoPosts.js"></script>
+    <script src = "./JS/schema.js" ></script>
+    <script src = "./JS/photoPosts.js" ></script>
     <script src = "./JS/postService.js"></script>
     <script src = "./JS/domAPI.js"></script>
     <script src = "./JS/edit.js"></script>
-    <script src = "./JS/listeners-addform.js"></script>
-    <script src = "./JS/listeners-signform.js"></script>
-    <script src = "./JS/listeners-filters.js"></script>
+    <script src = "./JS/listener.js"></script>
   </body>
 </html>

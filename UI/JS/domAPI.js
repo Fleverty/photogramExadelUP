@@ -1,4 +1,4 @@
-!function(postsService) {
+!function(postsService, pageListener) {
     'use strict'
 
     let domService ={};
@@ -21,8 +21,8 @@
             "<div class = \"count\">" + photoPost.likes.length + "</div>" + 
         "</div>" + 
           "<div class = \"editdel\">"+
-              "<div class = \"edit\"><button>Edit</button></div>" + 
-              "<div class = \"delete\"><button>Delete</button></div>" +
+              "<div class = \"edit\"  onclick = 'window.pageListener.detailEditForm(event)'><button>Edit</button></div>" + 
+              "<div class = 'delete' onclick = 'window.pageListener.deletePost(event)'><button>Delete</button></div>" +
           "</div>" + 
         "</div>" + 
         "<div class = \"hashtags\">" + 
@@ -35,8 +35,8 @@
       return view;
     } 
     
-    domService.showPosts = (filter) => {
-      postService.getPhotoPosts(0, 10, filter).forEach(function(elem) {
+    domService.showPosts = (skip = 0, top = 10, filter) => {
+      postService.getPhotoPosts(skip, top, filter).forEach(function(elem) {
         let detailPhotoPost = document.createElement('div');
         detailPhotoPost.id = elem.id;
         detailPhotoPost.className = "post"
@@ -58,14 +58,15 @@
 
     domService.clean = () => {
       document.querySelectorAll("div.post").forEach(function(elem) {
-        domService.deletePost(elem.id);
+        let content = document.querySelector("div.content");
+        content.removeChild(elem);
       });
     }
     
     domService.addPost = (photoPost) => {
       if(!postService.addPhotoPost(photoPost)) return false;
       let postViem = document.createElement('div');
-      postViem.className = "post"
+      postViem.className = "post";
       postViem.id = photoPost.id;
       postViem.innerHTML = domService.detailPhotoPostView(photoPost);
       let content = document.querySelector("div.content");
@@ -103,8 +104,7 @@
       let login = document.querySelector('div.login');
       let place = document.querySelector('div.search');
       let posts = document.querySelectorAll('div.likemenu');
-      login.innerHTML = "Sign in";
-        
+      login.innerHTML = "Sign in"
       posts.forEach(function(elem) {
         let editdel = document.querySelector('div.editdel');
         if(elem.contains(editdel)) elem.removeChild(editdel);
@@ -121,17 +121,17 @@
           if(author[i].innerHTML === value){
             let newEditDel = document.createElement('div');
             newEditDel.className = 'editdel';
-            newEditDel.innerHTML = '<div class = "edit"><button>Edit</button></div>' +
-            '<div class = "delete"><button>Delete</button></div>';
+            newEditDel.innerHTML = "<div class = \"edit\" onclick = 'window.pageListener.detailEditForm(event)'><button>Edit</button></div>" +
+            "<div class = 'delete' onclick = 'window.pageListener.deletePost(event)'><button>Delete</button></div>";
             likemenu[i].appendChild(newEditDel);
           }
         }
         let searchBar = document.querySelector('div.searchbar')
         let newAdd = document.createElement('div');
         newAdd.className = 'btn';
-        newAdd.innerHTML = '<button >+ Add new post</button>';
+        newAdd.innerHTML = "<button onclick='window.pageListener.detailAddForm()' >+ Add new post</button>";
         place.insertBefore(newAdd, searchBar); 
       }
     }
     window.domService = domService;
-}(window.postsService)
+}(window.postsService, window.pageListener)

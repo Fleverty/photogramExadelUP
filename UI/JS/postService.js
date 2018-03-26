@@ -8,7 +8,7 @@
 
     postService.getPhotoPosts = (skip = 0, top = 10, filter) => {
         if (!filter){
-          window.photoPosts.sort((a, b) => {return a.createdAt - b.createdAt})
+          window.photoPosts.sort((a, b) => {return b.createdAt - a.createdAt})
           return window.photoPosts.slice(skip, top);
         } 
       
@@ -16,6 +16,12 @@
               return window.SCHEMA.FIELDS_VALID_TO_FILTER.indexOf(filterField) !== -1
           });
           var filteredPhotoPosts = [];
+          if(filterFields.indexOf("hashtags") === -1){
+            filteredPhotoPosts = window.photoPosts.filter(photoPost => {
+              return filterFields.every(filterField => photoPost[filterField] === filter[filterField]);
+          });
+          }
+
           if(filterFields.indexOf("hashtags") !== -1){
             var filteredByHashtag = window.photoPosts.filter(photoPost => {
               return  postService.compareHashtag(filter.hashtags, photoPost.hashtags);
@@ -25,14 +31,8 @@
               return filterFields.every(filterField => photoPost[filterField] === filter[filterField]);
             });
           }
-    
-          
-          if(filterFields.indexOf("hashtags") === -1){
-            filteredPhotoPosts = window.photoPosts.filter(photoPost => {
-              return filterFields.every(filterField => photoPost[filterField] === filter[filterField]);
-          });
-          }
-          if(filteredPhotoPosts.length > 1) filteredPhotoPosts.sort((a, b) => {return a.createdAt - b.createdAt});
+
+          if(filteredPhotoPosts.length > 1) filteredPhotoPosts.sort((a, b) => {return b.createdAt - a.createdAt});
           return filteredPhotoPosts.slice(skip, top);
       }
     
@@ -85,7 +85,7 @@
       }
     
       postService.compareHashtag = (a, b) => {
-        for(i = 0; i < a.length; i++) {
+        for(var i = 0; i < a.length; i++) {
             if(b.indexOf(a[i]) === -1) return false;
           }
         return true;
