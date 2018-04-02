@@ -26,7 +26,7 @@
         "<div class = \"photo\"><img src =" + photoPost.photoLink + "> </div>" +
         "<div class = \"likemenu\">" +
           "<div class = \"like\">" +
-            "<div class = \"like_icon\"><img src = \"http://jetgram.ru/wp-content/uploads/2015/07/heart-icon-e1437983700774.png\"></div>" +
+            "<div class = \"like_icon\" onclick = 'window.pageListener.putLike(event)'><img src = \"http://jetgram.ru/wp-content/uploads/2015/07/heart-icon-e1437983700774.png\"></div>" +
             "<div class = \"count\">" + photoPost.likes.length + "</div>" + 
         "</div>" + 
           "<div class = \"editdel\">"+
@@ -155,6 +155,12 @@
       newAdd.className = 'btn';
       newAdd.innerHTML = "<button onclick='window.pageListener.detailAddForm()' >+ Add new post</button>";
       place.insertBefore(newAdd, searchBar); 
+    }
+
+    domService.like = (id, user) => {
+      postService.liking(id, user);
+      domService.editPost(id, {likes: postService.getPhotoPost(id).likes});
+      domService.userConfig(domService.user);
     }
 
     domService.saveUser();

@@ -2,12 +2,12 @@
 <html>
   
   <head>
-    <link rel="stylesheet" href="./css-styles/styles.css"></link>
-    <link rel="stylesheet" href="./css-styles/styles_header.css"></link>
-    <link rel="stylesheet" href="./css-styles/styles_content.css"></link>
-    <link rel="stylesheet" href="./css-styles/styles_search.css"></link>
-    <link rel ="stylesheet" href="./css-styles/styles-addform.css"></link>
-    <link rel ="stylesheet" href="./css-styles/styles-signform.css"></link>
+    <link rel="stylesheet" href="./UI/css-styles/styles.css"></link>
+    <link rel="stylesheet" href="./UI/css-styles/styles_header.css"></link>
+    <link rel="stylesheet" href="./UI/css-styles/styles_content.css"></link>
+    <link rel="stylesheet" href="./UI/css-styles/styles_search.css"></link>
+    <link rel ="stylesheet" href="./UI/css-styles/styles-addform.css"></link>
+    <link rel ="stylesheet" href="./UI/css-styles/styles-signform.css"></link>
   </head>
 
   <body>
@@ -37,19 +37,10 @@
             <button>+ Add new post</button>
           </div>
           <div class = "searchbar">
-            <div class = "date-bar">
             <input type = "date" class="date-search">
-            <input type = "button" value = "Submit" class = "submit" onclick="window.pageListener.filterByDate()"> 
-            </div>
-            <div class = "hashtag-bar">
             <input type = "text"  class="search-hashtags" placeholder="Search by hashtags">
-            <input type = "button" value = "Submit" class = "submit-hashtags" onclick="window.pageListener.filterByHashtags()">
-            </div> 
-            <div class = "author-bar">
             <select  class = "author-select" ></select>
-            <input type = "button" value = "Submit" class = "submit-author" onclick="window.pageListener.filterByAuthor()">
-            </div>            
-            </select>
+            <input type = "button" value = "Submit" class = "submit" onclick="window.pageListener.filterByAll()"> 
           </div>
           <div class = "hashtagtable" >
             <div class = "toptag">#kek</div>
@@ -61,17 +52,17 @@
           </div>
           <div class = "footer">
             <p>© 2018 Photogram | Vlad Bogatko | 2 course 4 group</p>
-            <p>bogatko.official@gmail.com | last update : 26.02.2018</p>
+            <p>bogatko.official@gmail.com | last update : 27.03.2018</p>
           </div>
         </div>
       </div>
       </div>
     </div>
-    <script src = "./JS/schema.js" ></script>
-    <script src = "./JS/photoPosts.js" ></script>
-    <script src = "./JS/postService.js"></script>
-    <script src = "./JS/domAPI.js"></script>
-    <script src = "./JS/edit.js"></script>
-    <script src = "./JS/listener.js"></script>
+    <script src = "./UI/JS/schema.js" ></script>
+    <script src = "./UI/JS/photoPosts.js" ></script>
+    <script src = "./UI/JS/postService.js"></script>
+    <script src = "./UI/JS/domAPI.js"></script>
+    <script src = "./UI/JS/edit.js"></script>
+    <script src = "./UI/JS/listener.js"></script>
   </body>
 </html>

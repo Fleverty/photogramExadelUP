@@ -15,8 +15,12 @@
     } 
       
     const filterFields = Object.keys(filter).filter(filterField => {
-      return window.SCHEMA.FIELDS_VALID_TO_FILTER.indexOf(filterField) !== -1
+      return (window.SCHEMA.FIELDS_VALID_TO_FILTER.indexOf(filterField) !== -1 && filter[filterField] !== "")
     });
+    if(filter["hashtags"][0] === "") {
+      filterFields.splice(filterFields.indexOf("hashtags"), 1);
+    }
+    
 
     var filteredPhotoPosts = [];
 
@@ -44,8 +48,16 @@
   }
     
     
-  postService.getPhotoPost = id => window.photoPosts.find(photoPost => photoPost.id === id);
+  postService.getPhotoPost = id =>{
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', 'photoPost.js', false);
+    xhr.send();
+
+    if (!xhr.responseText) return undefined;
+    return JSON.parse(xhr.responseText);
+  } //window.photoPosts.find(photoPost => photoPost.id === id);
     
+
   postService.validatePhotoPost = photoPost => {
     const fieldsToValidate = Object.keys(window.SCHEMA.PHOTOPOST);
     const photoPostFields = Object.keys(photoPost);
@@ -113,8 +125,27 @@
   }
 
   postService.saveChanges = () => {
-    let localArticles = JSON.stringify(photoPosts);
-    localStorage.setItem('posts', localArticles);
+    /*let localArticles = JSON.stringify(photoPosts);
+    localStorage.setItem('posts', localArticles);*/
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', '/photoPosts', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(photoPosts));
+  }
+
+  postService.liking = (id, user) => {
+    var arrLikes = postService.getPhotoPost(id).likes;
+    let oldUSer = arrLikes.find(element => {
+      return element === user;
+    });
+    if(oldUSer === undefined) {
+      postService.getPhotoPost(id).likes.push(user);
+      postService.saveChanges();
+    }
+    else {
+      postService.getPhotoPost(id).likes.pop(user);
+      postService.saveChanges();
+    }
   }
 
   window.postService = postService;

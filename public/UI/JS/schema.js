@@ -30,7 +30,7 @@ const SCHEMA = {
       }
     },
     FIELDS_VALID_TO_FILTER: ['createdAt', 'author', 'hashtags'],
-    FIELDS_VALID_TO_UPDATE: ['description', 'photoLink', 'hashtags'],
+    FIELDS_VALID_TO_UPDATE: ['description', 'photoLink', 'hashtags', 'likes'],
   }
 
 window.SCHEMA = SCHEMA;

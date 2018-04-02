@@ -25,21 +25,22 @@
 }
 
 .searchbar {
-    height: 4.8vw;
+    height: 7vw;
     width: 24vw;
     margin-top: 6%;
     margin-left: 6%;
     font-size:1vw;
     display: flex;
     flex-direction: column;
-    justify-content: space-between
+    justify-content: space-between;
 }
 
 .date-bar {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    height: 7vw;
 }
 
 .date-search {
@@ -48,24 +49,10 @@
     font-size: 0.9vw;
 }
 
-.hashtag-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .search-hashtags {
     width: 19.7vw;
     height: 1vw;
     font-size: 0.9vw;
-}
-
-.author-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .author-select {
@@ -80,11 +67,6 @@
     width: 3.8vw;
 }
 
-.submit-author {
-    height: 1.4vw;
-    font-size: 0.9vw;
-    width: 3.8vw;
-}
 
 .hashtagtable {
     width: 18vw;

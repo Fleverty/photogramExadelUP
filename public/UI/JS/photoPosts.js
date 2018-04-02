@@ -64,7 +64,14 @@ var photoPosts = [
   }
 ];
 
-var photoPosts1 = JSON.parse(localStorage.getItem('posts'))
-if(photoPosts1 !== null) photoPosts = photoPosts1;
+/*var photoPosts1 = JSON.parse(localStorage.getItem('posts'))
+if(photoPosts1 !== null) photoPosts = photoPosts1;*/
+let xhr = new XMLHttpRequest();
+xhr.open('GET', './UI/JS/photoPosts.js', false);
+xhr.send();
+photoPosts = JSON.parse(xhr.responseText, (key, value) => {
+  if (key === 'createdAt') return new Date(value);
+  return value;
+});
 
 window.photoPosts = photoPosts;

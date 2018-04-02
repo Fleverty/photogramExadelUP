@@ -9,7 +9,7 @@
           "<div class = \"label-1\">" +
             "<div class = \"image\">" + 
               "<input class=\"imagelink\" type=\"text\" placeholder=\"Link...\"/>" + 
-              "<input type = \"button\" value = \"Submit\" class = \"submit\">"  +
+              "<input type = \"button\" value = \"Submit\" class = \"submit\" onclick = 'pageListener.showPhoto()'>"  +
             "</div>" +
             "<input class=\"hashtag-input\" type=\"text\" placeholder=\"Hashtags...\"/>" + 
             "<textarea class=\"description-input\" placeholder=\"Write something about photo...\"></textarea>" + 
@@ -106,6 +106,16 @@
         domService.userConfig(domService.user);
     }
 
+    pageListener.filterByAll = () => {
+        let author = document.querySelector("select.author-select").value;
+        let hashtags = [];
+        hashtags = document.querySelector("input.search-hashtags").value.split(', ');
+        let date = document.querySelector("input.date-search").value;
+        domService.clean();
+        domService.showPosts(0, 10, {author: author, createdAt: date, hashtags: hashtags});
+        domService.userConfig(domService.user);
+    }
+
     pageListener.detailEditForm = (event) => {
         let target = event.target;
         while(target.className !== 'post') {
@@ -114,7 +124,6 @@
         let photoPost = postService.getPhotoPost(target.id);
         let description = photoPost.description;
         let hashtags = photoPost.hashtags.join(', ');
-        
         let detailEditForm = "<div class = \"addform\">" + 
         "<div class = \"header-addform\"> Edit post</div>" + 
         "<div class = \"main-addform\">" + 
@@ -123,8 +132,8 @@
               "<input class=\"imagelink\" type=\"text\" value =" + photoPost.photoLink +" >" + 
               "<input type = \"button\" value = \"Submit\" class = \"submit\">"  +
             "</div>" +
-            "<input class=\"hashtag-input\" type=\"text\" placeholder=\"Hashtags...\" value = " +hashtags  + ">" + 
-            '<textarea class="description-input" value ="' + description  +'" ></textarea>' + 
+            "<input class=\"hashtag-input\" type=\"text\" placeholder=\"Hashtags...\">" + 
+            '<textarea class="description-input" ></textarea>' + 
           "</div>" +
           "<div class = \"label-2\">" + 
               "<div class=\"detail-news-photo\"><img src = " + photoPost.photoLink + ">" +
@@ -133,8 +142,11 @@
                 "<div class = \"addbutton\" onclick = pageListener.editPost(" + target.id +")><button>Edit</button></div>" + 
                 "<div class = \"canselbutton\" onclick = 'pageListener.deleteAddForm()'><button>Cansel</button></div>" +
               "</div></div></div></div>";
-
+              
         document.body.innerHTML += detailEditForm;
+
+        document.querySelector("input.hashtag-input").value = hashtags;
+        document.querySelector("textarea.description-input").value = description;
     }
 
     pageListener.editPost = (id) => {
@@ -148,6 +160,18 @@
         pageListener.deleteAddForm();
     }
 
+    pageListener.putLike = (event) => {
+        let target = event.target;
+        while(target.className !== 'post') {
+            target = target.parentNode;
+        }
+        domService.like(target.id, domService.user);
+    }
+
+    pageListener.showPhoto = () => {
+        let url = document.querySelector("input.imagelink").value;
+        document.querySelector("div.detail-news-photo").innerHTML = "<img src =" + url + ">"
+    }
 
     window.pageListener = pageListener;
 }(window.domService, window.postService)
