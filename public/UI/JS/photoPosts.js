@@ -2,7 +2,7 @@ var photoPosts = [
   {
     id: '1',
     description: 'Женская сборная Беларуси выиграла эстафету в рамках соревнований по биатлону на Олимпийских играх в Пхёнчхане!!!',
-    createdAt: new Date('2019-02-23T23:00:00'),
+    createdAt: '2018-01-12',
     author: 'Петров Пётр',
     photoLink: 'http://ont.by/webroot/delivery/files/news/2018/02/22/Dom.jpg',
     hashtags : ["kek", "cheburek", 'lol', 'hah'],
@@ -11,19 +11,19 @@ var photoPosts = [
   {
     id: '2',
     description: 'Врачи считали, что с тяжелой болезнью он проживет 2-3 года, а он прожил еще полвека, став одним из величайших ученых и популяризаторов науки.',
-    createdAt: new Date,
+    createdAt: '2018-01-12',
     author: 'Lentach',
     photoLink: 'https://pp.userapi.com/c844724/v844724383/24b6/_CNc2DTyvs0.jpg',
-    hashtags: ['kek', 'lol', 'cheburek', 'hah'],
+    hashtags: ['kek', 'lol', 'cheburek', 'hah', 'type'],
     likes: ['Иванов Иван', 'Jack Daniels'],
   },
   {
     id: '3',
     description: 'Сегодня утром скончался один из величайших ученых современности Стивен Хокинг.',
-    createdAt: new Date,
+    createdAt: '2018-01-13',
     author: 'Lentach',
     photoLink: 'https://pp.userapi.com/c7002/v7002812/44397/52jte-ePsQQ.jpg',
-    hashtags: ['kek', 'lol', 'cheburek', 'hah'],
+    hashtags: ['kek', 'lol', 'cheburek', 'hah', 'type'],
     likes: ['Иванов Иван', 'Jack Daniels'],
   },
   {
@@ -61,7 +61,17 @@ var photoPosts = [
     photoLink: 'https://pp.userapi.com/c7002/v7002785/449b6/SUUJ2gzQ6bY.jpg',
     hashtags: ['kek', 'lol', 'cheburek', 'hah'],
     likes: ['Иванов Иван', 'Jack Daniels'],
-  },
+  }
 ];
+
+/*var photoPosts1 = JSON.parse(localStorage.getItem('posts'))
+if(photoPosts1 !== null) photoPosts = photoPosts1;*/
+let xhr = new XMLHttpRequest();
+xhr.open('GET', './UI/JS/photoPosts.js', false);
+xhr.send();
+photoPosts = JSON.parse(xhr.responseText, (key, value) => {
+  if (key === 'createdAt') return new Date(value);
+  return value;
+});
 
 window.photoPosts = photoPosts;

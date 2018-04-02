@@ -1,0 +1,86 @@
+.addform {
+    width: 44vw;
+    height: 30vw;
+    background-color: whitesmoke;
+    position: absolute;
+    left: 18vw;
+    top: 8vw;
+    border:  black solid 0.1vw
+  }
+  
+  .header-addform {
+    background-color: #008080;
+    height: 3vw;
+    font-family: Billabong;
+    font-size: 2.5vw;
+    text-align: center;
+  }
+  
+  .main-addform {
+    display: flex;
+  }
+  
+  .label-1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 23vw;
+    height: 27vw;
+  }
+  
+  .imagelink{
+    width: 16vw;
+  }
+  
+  .hashtag-input {
+    width: 20vw;
+  }
+  
+  .description-input {
+    width: 20vw;
+    height: 13vw;
+  }
+  
+  .label-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    width: 23vw;
+    height: 27vw;
+  }
+  
+  .detail-news-photo {
+    width: 18vw;
+    height: 16vw;
+    background-color: peru;
+  }
+  
+  .detail-news-photo IMG {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .addbutton button {
+    background-color: #008080;
+    border: 1px solid rgb(56,126,245); /* Green border */
+    color: black; /* White text */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    height: 2.5vw;
+    width: 7vw;
+    font-size: 1.2vw;
+  }
+  
+  .canselbutton button {
+    background-color:  rgb(232,75,57);
+    border: 1px solid  rgb(232,75,57); /* Green border */
+    color: black; /* White text */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+    height: 2.5vw;
+    width: 7vw;
+    font-size: 1.2vw;
+  }
+  

@@ -3,7 +3,7 @@
 }
 .search {
     height: 100%;
-    width: 40vw;
+    width: 38vw;
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -11,6 +11,7 @@
 .btn {
     margin-top: 6%;
     margin-left: 6%;
+    width: 24vw;
 }
 .btn button {
     background-color:#008080; 
@@ -24,47 +25,34 @@
 }
 
 .searchbar {
-    height: 4.8vw;
+    height: 7vw;
     width: 24vw;
     margin-top: 6%;
     margin-left: 6%;
     font-size:1vw;
     display: flex;
     flex-direction: column;
-    justify-content: space-between
+    justify-content: space-between;
 }
 
 .date-bar {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    height: 7vw;
 }
 
 .date-search {
-    width: 9.5vw;
+    width: 19.7vw;
     height: 1.2vw;
     font-size: 0.9vw;
-}
-
-.hashtag-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .search-hashtags {
     width: 19.7vw;
     height: 1vw;
     font-size: 0.9vw;
-}
-
-.author-bar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .author-select {
@@ -78,6 +66,7 @@
     font-size: 0.9vw;
     width: 3.8vw;
 }
+
 
 .hashtagtable {
     width: 18vw;

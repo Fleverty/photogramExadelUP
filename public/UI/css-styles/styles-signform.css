@@ -1,0 +1,55 @@
+.signform {
+    width: 25vw;
+    height: 16vw;
+    background-color: whitesmoke;
+    position: absolute;
+    left: 35vw;
+    top: 14vw;
+    border:  black solid 0.1vw;
+    font-family: Billabong;
+  }
+  
+  .header-signform {
+    background-color: #008080;
+    height: 3vw;
+    font-family: Billabong;
+    font-size: 2.5vw;
+    text-align: center;
+  }
+  
+  .main-signform {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    height: 9vw;
+    font-size: 1.5vw;
+  }
+
+  .loginform {
+    display: flex;
+  }
+
+  .passwordform {
+    display: flex;
+    width: 24.3vw;
+  }
+
+  .inputlogin {
+    width: 17vw;
+  }
+  
+  .password {
+    width: 17.1vw;
+  }
+
+  .okcansel {
+    height: 3vw;
+    width: 15vw;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    width: 17vw;
+    margin-left: 5vw;
+  }
