@@ -1,11 +1,1 @@
-[
-    {
-      "id": "7",
-      "description": "Режиссёр «Последних джедаев» Райан Джонсон заявил, что сеть ботов из России попыталась повлиять на сюжет фильма.",
-      "createdAt": "new Date",
-      "author": "Just_guy",
-      "photoLink": "https://pp.userapi.com/c7002/v7002785/449b6/SUUJ2gzQ6bY.jpg",
-      "hashtags": ["kek", "lol", "cheburek", "hah"],
-      "likes": ["Иванов Иван", "Jack Daniels"]
-    }
-  ]
+[{"id":"7","description":"Режиссёр «Последних джедаев» Райан Джонсон заявил, что сеть ботов из России попыталась повлиять на сюжет фильма.","createdAt":"new Date","author":"Just_guy","photoLink":"https://pp.userapi.com/c7002/v7002785/449b6/SUUJ2gzQ6bY.jpg","hashtags":["kek","lol","cheburek"],"likes":["Иванов Иван","Jack Daniels","Just_guy","\"ernesto_gavara\""]},{"id":"4","description":"Врачи считали, что с тяжелой болезнью он проживет 2-3 года, а он прожил еще полвека, став одним из величайших ученых и популяризаторов науки.","createdAt":"new Date","author":"Lentach","photoLink":"https://pp.userapi.com/c844724/v844724383/24b6/_CNc2DTyvs0.jpg","hashtags":["kek","lol","cheburek","hah"],"likes":["Иванов Иван","Jack Daniels"]},{"id":"3","description":"Сегодня утром скончался один из величайших ученых современности Стивен Хокинг.","createdAt":"new Date","author":"Lentach","photoLink":"https://pp.userapi.com/c7002/v7002812/44397/52jte-ePsQQ.jpg","hashtags":["kek","lol","cheburek","hah"],"likes":["Иванов Иван","Jack Daniels","Just_guy"]},{"id":"8","description":"14 марта (03.14) отмечается День числа π!","createdAt":"new Date","author":"Math","photoLink":"https://pp.userapi.com/c7002/v7002785/449b6/SUUJ2gzQ6bY.jpg","hashtags":["kek","lol","cheburek","hah"],"likes":["Иванов Иван","Jack Daniels","Just_guy"]}]

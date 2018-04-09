@@ -1,7 +1,6 @@
 !function(photoPosts, schema) {
   'use strict'
 
-  photoPosts = photoPosts || [];
 
   var SCHEMA = schema;
   let postService = {}
@@ -50,12 +49,12 @@
     
   postService.getPhotoPost = id =>{
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', 'photoPost.js', false);
-    xhr.send();
+    xhr.open('GET', '/posts/' + id + ' ', false);
+    xhr.send(id);
 
     if (!xhr.responseText) return undefined;
     return JSON.parse(xhr.responseText);
-  } //window.photoPosts.find(photoPost => photoPost.id === id);
+  } 
     
 
   postService.validatePhotoPost = photoPost => {
@@ -71,8 +70,10 @@
     
   postService.addPhotoPost = photoPost => {
     if(postService.validatePhotoPost(photoPost)) {
-      window.photoPosts.unshift(photoPost);
-      postService.saveChanges();
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', '/addPhotoPost', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(photoPost));
       return true;
     }
     return false;
@@ -80,6 +81,7 @@
     
   postService.editPhotoPost = (id, editPost) => {
     let postToUpdate = postService.getPhotoPost(id);
+    let skip = photoPosts.indexOf(postService.getPhotoPost(id));
     if (!postToUpdate) {
       return false;
     } 
@@ -98,7 +100,10 @@
       postToUpdate[fieldToUpdate] = editPost[fieldToUpdate];
     });
 
-    postService.saveChanges();
+    let xhr = new XMLHttpRequest();
+    xhr.open('PUT', '/editPhotoPost/' + id + ' ', false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(postToUpdate));
 
     return postService.validatePhotoPost(postToUpdate);
   }
@@ -109,11 +114,9 @@
     if (!photoPost) {
       return false;
     } 
-
-    window.photoPosts.splice(window.photoPosts.indexOf(photoPost), 1);
-
-    postService.saveChanges();
-
+    let xhr = new XMLHttpRequest();
+    xhr.open('DELETE', '/removePhotoPost/' + id + ' ', false);
+    xhr.send(id);
     return true;
   }
     
@@ -124,28 +127,18 @@
     return true;
   }
 
-  postService.saveChanges = () => {
-    /*let localArticles = JSON.stringify(photoPosts);
-    localStorage.setItem('posts', localArticles);*/
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', '/photoPosts', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(photoPosts));
-  }
-
   postService.liking = (id, user) => {
     var arrLikes = postService.getPhotoPost(id).likes;
     let oldUSer = arrLikes.find(element => {
       return element === user;
     });
     if(oldUSer === undefined) {
-      postService.getPhotoPost(id).likes.push(user);
-      postService.saveChanges();
+      arrLikes.push(user);
     }
     else {
-      postService.getPhotoPost(id).likes.pop(user);
-      postService.saveChanges();
+      arrLikes.pop(user);
     }
+    return arrLikes;
   }
 
   window.postService = postService;

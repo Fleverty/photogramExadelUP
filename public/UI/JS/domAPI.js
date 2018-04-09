@@ -4,13 +4,19 @@
   let domService ={};
 
     
-  domService.user = "Lentach";
-  var newUser = JSON.parse(localStorage.getItem('user'));
-  domService.user = newUser;
+  domService.user = "";
+
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', '/currentUser', false);
+  xhr.send();
+  domService.user = xhr.responseText;
 
   domService.saveUser = () => {
-    let localUser = JSON.stringify(domService.user);
-    localStorage.setItem('user', localUser);
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', '/updateUser', false);
+    console.log(domService.user);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({user : domService.user}));
   }
     
   domService.detailPhotoPostView = (photoPost) => {
@@ -158,8 +164,8 @@
     }
 
     domService.like = (id, user) => {
-      postService.liking(id, user);
-      domService.editPost(id, {likes: postService.getPhotoPost(id).likes});
+      let likes = postService.liking(id, user);
+      domService.editPost(id, {likes: likes});
       domService.userConfig(domService.user);
     }
 

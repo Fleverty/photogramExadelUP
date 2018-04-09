@@ -64,14 +64,18 @@ var photoPosts = [
   }
 ];
 
-/*var photoPosts1 = JSON.parse(localStorage.getItem('posts'))
-if(photoPosts1 !== null) photoPosts = photoPosts1;*/
+
 let xhr = new XMLHttpRequest();
-xhr.open('GET', './UI/JS/photoPosts.js', false);
+xhr.open('GET', '/posts', false);
 xhr.send();
-photoPosts = JSON.parse(xhr.responseText, (key, value) => {
-  if (key === 'createdAt') return new Date(value);
-  return value;
-});
+if(xhr.responseText) photoPosts = JSON.parse(xhr.responseText);
+
+photoPosts.indexOf = (element) => {
+    for (var i = 0; i < photoPosts.length; i++) {
+        if (JSON.stringify(photoPosts[i]) === JSON.stringify(element)) return i;
+    }
+    return -1;
+}
+
 
 window.photoPosts = photoPosts;
