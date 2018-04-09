@@ -21,7 +21,8 @@
     "diskdb": "^0.1.17",
     "express": "^4.15.2",
     "fs": "0.0.1-security",
-    "http": "0.0.0"
+    "http": "0.0.0",
+    "npm": "^5.8.0"
   },
   "description": "",
   "devDependencies": {
