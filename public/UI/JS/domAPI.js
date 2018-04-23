@@ -14,7 +14,6 @@
   domService.saveUser = () => {
     let xhr = new XMLHttpRequest();
     xhr.open('POST', '/updateUser', false);
-    console.log(domService.user);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify({user : domService.user}));
   }

@@ -18,6 +18,37 @@ app.get('/posts', (req, res) => {
   res.send(JSON.stringify(obj));
 });
 
+app.post('/filter', (req, res) => {
+  let skip = JSON.parse(req.query.skip);
+  let top = JSON.parse(req.query.top);
+  let filterFields = req.query.filterFields.split(',');
+  let filter = req.body;
+
+  var filteredPhotoPosts = [];
+
+    if(filterFields.indexOf("hashtags") === -1){
+      filteredPhotoPosts = obj.filter(photoPost => {
+      return filterFields.every(filterField => photoPost[filterField] === filter[filterField]);
+      });
+    }
+
+    if(filterFields.indexOf("hashtags") !== -1){
+      var filteredByHashtag = obj.filter(photoPost => {
+      return  postService.compareHashtag(filter.hashtags, photoPost.hashtags);
+      })
+      filterFields.splice(filterFields.indexOf("hashtags"), 1);
+      filteredPhotoPosts = filteredByHashtag.filter(photoPost => {
+        return filterFields.every(filterField => photoPost[filterField] === filter[filterField]);
+      });
+    }
+
+    if(filteredPhotoPosts.length > 1) filteredPhotoPosts.sort((a, b) => {
+      return b.createdAt - a.createdAt
+    });
+    
+    res.send(JSON.stringify(filteredPhotoPosts.slice(skip, top)));
+});
+
 app.get('/posts/:id', (req, res) => {
   res.send(JSON.stringify(obj.find(photoPost => photoPost.id === req.params.id)));
 });

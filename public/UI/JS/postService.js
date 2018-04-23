@@ -6,7 +6,7 @@
   let postService = {}
 
   postService.getPhotoPosts = (skip = 0, top = 10, filter) => {
-    if (!filter){
+    if (!filter){isset
       window.photoPosts.sort((a, b) => {
         return b.createdAt - a.createdAt
       })
@@ -16,34 +16,34 @@
     const filterFields = Object.keys(filter).filter(filterField => {
       return (window.SCHEMA.FIELDS_VALID_TO_FILTER.indexOf(filterField) !== -1 && filter[filterField] !== "")
     });
-    if(filter["hashtags"][0] === "") {
+    /*if(filter.indexOf("hashtags") !== -1 && filter["hashtags"][0] === "") {
       filterFields.splice(filterFields.indexOf("hashtags"), 1);
+    }*/
+
+    let xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (this.readyState != 4) return;
+
+      if (this.status == 200) {
+        if (this.responseText) {
+          // сервер может закрыть соединение без ответа при перезагрузке
+        }
+        postService.getPhotoPosts(0, 10);
+        return;
+      }
+
+      if (this.status != 502) {
+        // 502 - прокси ждал слишком долго, надо пересоединиться, это не ошибка
+         // показать ошибку
+      }
+      
+      setTimeout(postService.getPhotoPosts(0, 10), 1000); // попробовать ещё раз через 1 сек
     }
-    
-
-    var filteredPhotoPosts = [];
-
-    if(filterFields.indexOf("hashtags") === -1){
-      filteredPhotoPosts = window.photoPosts.filter(photoPost => {
-      return filterFields.every(filterField => photoPost[filterField] === filter[filterField]);
-      });
-    }
-
-    if(filterFields.indexOf("hashtags") !== -1){
-      var filteredByHashtag = window.photoPosts.filter(photoPost => {
-      return  postService.compareHashtag(filter.hashtags, photoPost.hashtags);
-      })
-      filterFields.splice(filterFields.indexOf("hashtags"), 1);
-      filteredPhotoPosts = filteredByHashtag.filter(photoPost => {
-        return filterFields.every(filterField => photoPost[filterField] === filter[filterField]);
-      });
-    }
-
-    if(filteredPhotoPosts.length > 1) filteredPhotoPosts.sort((a, b) => {
-      return b.createdAt - a.createdAt
-    });
-
-    return filteredPhotoPosts.slice(skip, top);
+    xhr.open('POST', '/filter?skip=' + skip + '&top=' + top + '&filterFields=' + filterFields.join(','), false);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    console.log(JSON.stringify(filter));
+    xhr.send(JSON.stringify(filter));
+    return JSON.parse(xhr.responseText);
   }
     
     
@@ -139,6 +139,12 @@
       arrLikes.pop(user);
     }
     return arrLikes;
+  }
+ 
+  postService.easy = () => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', '/filter?skip=10', false);
+    xhr.send();
   }
 
   window.postService = postService;

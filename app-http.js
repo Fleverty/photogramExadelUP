@@ -8,11 +8,11 @@ http.createServer((request, response) => {
     sendFile(file, response, {'Content-type': 'text/html;charset=utf-8'});
   }
   else if(request.url.indexOf('.js') != -1){
-    let file = new fs.ReadStream(__dirname + '/public/UI' + request.url);
+    let file = new fs.ReadStream(__dirname + '/public' + request.url);
     sendFile(file, response, {'Content-type': 'text/javascript'});
 
   }else if(request.url.indexOf('.css') != -1){
-    let file = new fs.ReadStream(__dirname + '/public/UI' + request.url);
+    let file = new fs.ReadStream(__dirname + '/public' + request.url);
     sendFile(file, response, {'Content-type': 'text/css'});
   }
   else if(request.url.indexOf('.jpg') != -1 || request.url.indexOf('.png') != -1) {
@@ -21,8 +21,13 @@ http.createServer((request, response) => {
   }
 
   else if(request.url.indexOf('.ttf') != -1) {
-      let file = new fs.ReadStream(__dirname + '/public/UI' + request.url);
+      let file = new fs.ReadStream(__dirname + '/public' + request.url);
       sendFile(file, response, {'Content-type': 'text/TrueType'});
+  } 
+  
+  else {
+    response.writeHead(200);
+    response.end();
   }
 
 }).listen(8000);
