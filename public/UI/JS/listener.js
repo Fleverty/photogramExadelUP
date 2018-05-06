@@ -36,7 +36,8 @@
         if(imagelink === "" || description === "") {
             return false;
         }
-        domService.addPost({id:'5', description: description, createdAt: "2018-12-23", author: domService.user, photoLink: imagelink, hashtags: hashtag, likes : []})
+        let id = Math.round(Math.random() * 1000) + ""
+        domService.addPost({id: id, description: description, createdAt: new Date, author: domService.user, photoLink: imagelink, hashtags: hashtag, likes : []})
         pageListener.deleteAddForm();
     }
     
@@ -116,12 +117,12 @@
         domService.userConfig(domService.user);
     }
 
-    pageListener.detailEditForm = (event) => {
+    pageListener.detailEditForm = async (event) => {
         let target = event.target;
         while(target.className !== 'post') {
             target = target.parentNode;
         }
-        let photoPost = postService.getPhotoPost(target.id);
+        let photoPost = await postService.getPhotoPost(target.id);
         let description = photoPost.description;
         let hashtags = photoPost.hashtags.join(', ');
         let detailEditForm = "<div class = \"addform\">" + 
@@ -165,6 +166,7 @@
         while(target.className !== 'post') {
             target = target.parentNode;
         }
+        console.log(target.id + " " + domService.user)
         domService.like(target.id, domService.user);
     }
 

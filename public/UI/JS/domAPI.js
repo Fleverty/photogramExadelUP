@@ -1,4 +1,4 @@
-!function(postsService, pageListener) {
+!function(postService, pageListener) {
   'use strict'
 
   let domService ={};
@@ -26,7 +26,7 @@
 
     let view = "<div class = \"headerpost\">" +
           "<div class = \"author\">" + photoPost.author + "</div>" + 
-          "<div class = \"time\">" + photoPost.createdAt + "</div>" +  
+          "<div class = \"time\">" + postService.dateToString(photoPost) + "</div>" +  
         "</div>" +
         "<div class = \"photo\"><img src =" + photoPost.photoLink + "> </div>" +
         "<div class = \"likemenu\">" +
@@ -50,8 +50,10 @@
     return view;
   } 
     
-  domService.showPosts = (skip = 0, top = 10, filter) => {
-    postService.getPhotoPosts(skip, top, filter).forEach(function(elem) {
+   domService.showPosts = async (skip = 0, top = 10, filter) => {
+    let array =  await postService.getPhotoPosts(skip, top, filter);
+    array.forEach(function(elem) {
+      console.log(elem);
       let detailPhotoPost = document.createElement('div');
       detailPhotoPost.id = elem.id;
       detailPhotoPost.className = "post"
@@ -67,6 +69,7 @@
     });
 
     let place = document.querySelector('select.author-select');
+    place.innerHTML = "";
     arr.forEach(function(element) {
       place.innerHTML += '<option>' + element + '</option>' 
     });
@@ -79,8 +82,8 @@
     });
   }
     
-  domService.addPost = (photoPost) => {
-    if(!postService.addPhotoPost(photoPost)) {
+  domService.addPost = async(photoPost) => {
+    if(await postService.addPhotoPost(photoPost) === false) {
       return false;
     }
 
@@ -93,8 +96,8 @@
     content.insertBefore(postViem, place);
   }
     
-  domService.deletePost = id => {
-    if(!postService.removePhotoPost(id)) {
+  domService.deletePost = async (id) => {
+    if(await postService.removePhotoPost(id) === false) {
       return false;
     }  
 
@@ -103,12 +106,12 @@
     content.removeChild(post);
   }
     
-  domService.editPost = (id, editField) => {
-    if(!postService.editPhotoPost(id, editField)) {
+  domService.editPost = async(id, editField) => {
+    if(await postService.editPhotoPost(id, editField) === false) {
       return false;
     }
     let post = document.getElementById(id);
-    let editPost = postService.getPhotoPost(id);
+    let editPost = await postService.getPhotoPost(id);
     let editElement = domService.getDomElement(domService.detailPhotoPostView(editPost), editPost);
     let currentPost = document.getElementById(id);
     let content = document.querySelector("div.content");
@@ -174,4 +177,4 @@
     
   window.domService = domService;
 
-}(window.postsService, window.pageListener)
+}(window.postService, window.pageListener)

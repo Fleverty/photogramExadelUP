@@ -68,7 +68,10 @@ var photoPosts = [
 let xhr = new XMLHttpRequest();
 xhr.open('GET', '/posts', false);
 xhr.send();
-if(xhr.responseText) photoPosts = JSON.parse(xhr.responseText);
+if(xhr.responseText) photoPosts = JSON.parse(xhr.responseText, (key, value) => {
+  if (key === 'createdAt') return new Date(value);
+  return value;
+});
 
 photoPosts.indexOf = (element) => {
     for (var i = 0; i < photoPosts.length; i++) {

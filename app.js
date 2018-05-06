@@ -25,6 +25,10 @@ app.post('/filter', (req, res) => {
   let filter = req.body;
 
   var filteredPhotoPosts = [];
+  
+  if(filter["hashtags"][0] === "") {
+    filterFields.splice(filterFields.indexOf("hashtags"), 1);
+  }
 
     if(filterFields.indexOf("hashtags") === -1){
       filteredPhotoPosts = obj.filter(photoPost => {
@@ -34,7 +38,11 @@ app.post('/filter', (req, res) => {
 
     if(filterFields.indexOf("hashtags") !== -1){
       var filteredByHashtag = obj.filter(photoPost => {
-      return  postService.compareHashtag(filter.hashtags, photoPost.hashtags);
+        for(var i = 0; i < filter.hashtags.length; i++) {
+          if(photoPost.hashtags.indexOf(filter.hashtags[i]) === -1) return false;
+        }
+        return true;
+      //return  postService.compareHashtag(filter.hashtags, photoPost.hashtags);
       })
       filterFields.splice(filterFields.indexOf("hashtags"), 1);
       filteredPhotoPosts = filteredByHashtag.filter(photoPost => {
