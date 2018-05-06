@@ -6,7 +6,7 @@
   let postService = {}
 
   postService.getPhotoPosts = (skip = 0, top = 10, filter) => {
-    if (!filter){isset
+    if (!filter){
       window.photoPosts.sort((a, b) => {
         return b.createdAt - a.createdAt
       })
@@ -16,44 +16,58 @@
     const filterFields = Object.keys(filter).filter(filterField => {
       return (window.SCHEMA.FIELDS_VALID_TO_FILTER.indexOf(filterField) !== -1 && filter[filterField] !== "")
     });
-    /*if(filter.indexOf("hashtags") !== -1 && filter["hashtags"][0] === "") {
-      filterFields.splice(filterFields.indexOf("hashtags"), 1);
-    }*/
 
-    let xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (this.readyState != 4) return;
-
-      if (this.status == 200) {
-        if (this.responseText) {
-          // сервер может закрыть соединение без ответа при перезагрузке
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', '/filter?skip=' + skip + '&top=' + top + '&filterFields=' + filterFields.join(','), false);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function () {
+        if(xhr.readyState !== 4) {
+          return;
         }
-        postService.getPhotoPosts(0, 10);
-        return;
+        if (xhr.status !== 200) {
+          console.log(xhr.status + ': ' + xhr.responseText || xhr.statusText);
+        }
+        else {
+          resolve(JSON.parse(xhr.responseText, (key, value) => {
+            if (key === 'createdAt') return new Date(value);
+            return value;
+          }))
+        }
       }
+      xhr.send(JSON.stringify(filter));
+    })
 
-      if (this.status != 502) {
-        // 502 - прокси ждал слишком долго, надо пересоединиться, это не ошибка
-         // показать ошибку
-      }
-      
-      setTimeout(postService.getPhotoPosts(0, 10), 1000); // попробовать ещё раз через 1 сек
-    }
-    xhr.open('POST', '/filter?skip=' + skip + '&top=' + top + '&filterFields=' + filterFields.join(','), false);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    console.log(JSON.stringify(filter));
-    xhr.send(JSON.stringify(filter));
-    return JSON.parse(xhr.responseText);
+    
   }
     
     
   postService.getPhotoPost = id =>{
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', '/posts/' + id + ' ', false);
-    xhr.send(id);
+    return new Promise((resolve, reject) => {
+      if(!id) {
+        return;
+      }
 
-    if (!xhr.responseText) return undefined;
-    return JSON.parse(xhr.responseText);
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', '/posts/' + id + ' ', false)
+      
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) {
+          return;
+        }
+        if (xhr.status !== 200) {
+        console.log(xhr.status + ': ' + xhr.responseText || xhr.statusText);
+        }
+        else {
+          resolve(JSON.parse(xhr.responseText, (key, value) => {
+            if (key === 'createdAt') return new Date(value);
+            return value;
+          }));
+        }
+      }
+      xhr.send();
+    })
+    
   } 
     
 
@@ -69,19 +83,35 @@
     
     
   postService.addPhotoPost = photoPost => {
-    if(postService.validatePhotoPost(photoPost)) {
+    return new Promise((resolve, reject) => {
+      if(!postService.validatePhotoPost(photoPost)) {
+        reject(false);
+      }
+
       let xhr = new XMLHttpRequest();
       xhr.open('POST', '/addPhotoPost', true);
       xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState !== 4) {
+          return;
+        }
+
+        if(xhr.status !== 200) {
+          console.log(xhr.status + ': ' + xhr.responseText || xhr.statusText);
+          reject(false);
+        }
+
+        else {
+          resolve(true);
+        }
+        
+      }
       xhr.send(JSON.stringify(photoPost));
-      return true;
-    }
-    return false;
+    })
   }
     
-  postService.editPhotoPost = (id, editPost) => {
-    let postToUpdate = postService.getPhotoPost(id);
-    let skip = photoPosts.indexOf(postService.getPhotoPost(id));
+  postService.editPhotoPost = async (id, editPost) => {
+    let postToUpdate = await postService.getPhotoPost(id);
     if (!postToUpdate) {
       return false;
     } 
@@ -99,25 +129,57 @@
     validFields.forEach(fieldToUpdate => {
       postToUpdate[fieldToUpdate] = editPost[fieldToUpdate];
     });
+    return new Promise((resolve, reject) => {
+      let xhr = new XMLHttpRequest();
+      xhr.open('PUT', '/editPhotoPost/' + id + ' ', false);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState !== 4) {
+          return;
+        }
 
-    let xhr = new XMLHttpRequest();
-    xhr.open('PUT', '/editPhotoPost/' + id + ' ', false);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(postToUpdate));
+        if(xhr.status !== 200) {
+          console.log(xhr.status + ': ' + xhr.responseText || xhr.statusText);
+          reject(false);
+        }
 
-    return postService.validatePhotoPost(postToUpdate);
+        else {
+          console.log(postService.validatePhotoPost(postToUpdate));
+          resolve(postService.validatePhotoPost(postToUpdate));
+        }
+        
+      }
+      xhr.send(JSON.stringify(postToUpdate));
+    })
   }
     
     
   postService.removePhotoPost = id => {
-    const photoPost = postService.getPhotoPost(id);
-    if (!photoPost) {
-      return false;
-    } 
-    let xhr = new XMLHttpRequest();
-    xhr.open('DELETE', '/removePhotoPost/' + id + ' ', false);
-    xhr.send(id);
-    return true;
+    return new Promise((resolve, reject) => {
+      const photoPost = postService.getPhotoPost(id);
+      if (!photoPost) {
+        return false;
+      } 
+      let xhr = new XMLHttpRequest();
+      xhr.open('DELETE', '/removePhotoPost/' + id + ' ', false);
+      xhr.onreadystatechange = function() {
+        if(xhr.readyState !== 4) {
+          return;
+        }
+
+        if(xhr.status !== 200) {
+          console.log(xhr.status + ': ' + xhr.responseText || xhr.statusText);
+          reject(false);
+        }
+
+        else {
+          resolve(true);
+
+        }
+        
+      }
+      xhr.send(id);
+    })
   }
     
   postService.compareHashtag = (a, b) => {
@@ -127,24 +189,31 @@
     return true;
   }
 
-  postService.liking = (id, user) => {
-    var arrLikes = postService.getPhotoPost(id).likes;
-    let oldUSer = arrLikes.find(element => {
+  postService.liking = async (id, user) => {
+    let arrLikes = await postService.getPhotoPost(id);
+    console.log(arrLikes);
+    console.log(arrLikes.likes);
+    let oldUSer = arrLikes.likes.find(element => {
       return element === user;
     });
+    console.log(oldUSer);
     if(oldUSer === undefined) {
-      arrLikes.push(user);
+      arrLikes.likes.push(user);
     }
     else {
-      arrLikes.pop(user);
+      arrLikes.likes.pop(user);
     }
-    return arrLikes;
+    console.log(arrLikes.likes);
+    return arrLikes.likes;
   }
  
-  postService.easy = () => {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', '/filter?skip=10', false);
-    xhr.send();
+  postService.dateToString = (photoPost) => {
+    return photoPost.createdAt.getDate() + "-" + (+photoPost.createdAt.getMonth() + 1) + "-" + photoPost.createdAt.getFullYear();
+  }
+
+  postService.easy = async() => {
+    let arrLikes = await postService.getPhotoPost("5");
+    console.log(arrLikes.likes);
   }
 
   window.postService = postService;
