@@ -1,152 +1,186 @@
-!function(photoPosts, schema) {
-  'use strict'
-
-
-  var SCHEMA = schema;
-  let postService = {}
+(function () {
+  const postService = {};
 
   postService.getPhotoPosts = (skip = 0, top = 10, filter) => {
-    if (!filter){isset
-      window.photoPosts.sort((a, b) => {
-        return b.createdAt - a.createdAt
-      })
+    if (!filter) {
+      window.photoPosts.sort((a, b) => b.createdAt - a.createdAt);
       return window.photoPosts.slice(skip, top);
-    } 
-      
-    const filterFields = Object.keys(filter).filter(filterField => {
-      return (window.SCHEMA.FIELDS_VALID_TO_FILTER.indexOf(filterField) !== -1 && filter[filterField] !== "")
-    });
-    /*if(filter.indexOf("hashtags") !== -1 && filter["hashtags"][0] === "") {
-      filterFields.splice(filterFields.indexOf("hashtags"), 1);
-    }*/
+    }
+    const filterFields = Object.keys(filter).filter(filterField => (window.SCHEMA.FIELDS_VALID_TO_FILTER.indexOf(filterField) !== -1 && filter[filterField] !== ''));
 
-    let xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (this.readyState != 4) return;
-
-      if (this.status == 200) {
-        if (this.responseText) {
-          // сервер может закрыть соединение без ответа при перезагрузке
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `/filter?skip=${skip}&top=${top}&filterFields=${filterFields.join(',')}`, false);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) {
+          return;
         }
-        postService.getPhotoPosts(0, 10);
+        if (xhr.status !== 200) {
+          console.log(`${xhr.status} : ${xhr.responseText || xhr.statusText}`);
+          reject(new Error('something bad happened'));
+        } else {
+          resolve(JSON.parse(xhr.responseText, (key, value) => {
+            if (key === 'createdAt') return new Date(value);
+            return value;
+          }));
+        }
+      };
+      xhr.send(JSON.stringify(filter));
+    });
+  };
+
+  postService.getPhotoPost = (id) => {
+    return new Promise((resolve, reject) => {
+      if (!id) {
         return;
       }
 
-      if (this.status != 502) {
-        // 502 - прокси ждал слишком долго, надо пересоединиться, это не ошибка
-         // показать ошибку
-      }
-      
-      setTimeout(postService.getPhotoPosts(0, 10), 1000); // попробовать ещё раз через 1 сек
-    }
-    xhr.open('POST', '/filter?skip=' + skip + '&top=' + top + '&filterFields=' + filterFields.join(','), false);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    console.log(JSON.stringify(filter));
-    xhr.send(JSON.stringify(filter));
-    return JSON.parse(xhr.responseText);
-  }
-    
-    
-  postService.getPhotoPost = id =>{
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', '/posts/' + id + ' ', false);
-    xhr.send(id);
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', `/posts/${id} `, false);
 
-    if (!xhr.responseText) return undefined;
-    return JSON.parse(xhr.responseText);
-  } 
-    
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) {
+          return;
+        }
+        if (xhr.status !== 200) {
+          console.log(`${xhr.status} : ${xhr.responseText || xhr.statusText}`);
+          reject(new Error('something bad happened'));
+        } else {
+          resolve(JSON.parse(xhr.responseText, (key, value) => {
+            if (key === 'createdAt') return new Date(value);
+            return value;
+          }));
+        }
+      };
+      xhr.send();
+    });
+  };
 
-  postService.validatePhotoPost = photoPost => {
+  postService.validatePhotoPost = (photoPost) => {
     const fieldsToValidate = Object.keys(window.SCHEMA.PHOTOPOST);
     const photoPostFields = Object.keys(photoPost);
-    
-    return fieldsToValidate.every(fieldToValidate => {
-      return photoPostFields.indexOf(window.SCHEMA.PHOTOPOST[fieldToValidate].NAME) !== -1 && 
-        (typeof photoPost[window.SCHEMA.PHOTOPOST[fieldToValidate].NAME]) === window.SCHEMA.PHOTOPOST[fieldToValidate].TYPE;
+
+    return fieldsToValidate.every((fieldToValidate) => {
+      return photoPostFields.indexOf(window.SCHEMA.PHOTOPOST[fieldToValidate].NAME) !== -1 &&
+      (typeof photoPost[window.SCHEMA.PHOTOPOST[fieldToValidate].NAME]) ===
+      window.SCHEMA.PHOTOPOST[fieldToValidate].TYPE;
     });
-  }
-    
-    
-  postService.addPhotoPost = photoPost => {
-    if(postService.validatePhotoPost(photoPost)) {
-      let xhr = new XMLHttpRequest();
+  };
+
+  postService.addPhotoPost = (photoPost) => {
+    return new Promise((resolve, reject) => {
+      if (!postService.validatePhotoPost(photoPost)) {
+        reject(new Error('something bad happened'));
+      }
+
+      const xhr = new XMLHttpRequest();
       xhr.open('POST', '/addPhotoPost', true);
       xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) {
+          return;
+        }
+
+        if (xhr.status !== 200) {
+          console.log(`${xhr.status} : ${xhr.responseText || xhr.statusText}`);
+          reject(new Error('something bad happened'));
+        } else {
+          resolve(true);
+        }
+      };
       xhr.send(JSON.stringify(photoPost));
-      return true;
-    }
-    return false;
-  }
-    
-  postService.editPhotoPost = (id, editPost) => {
-    let postToUpdate = postService.getPhotoPost(id);
-    let skip = photoPosts.indexOf(postService.getPhotoPost(id));
+    });
+  };
+
+  postService.editPhotoPost = async (id, editPost) => {
+    const postToUpdate = await postService.getPhotoPost(id);
     if (!postToUpdate) {
       return false;
-    } 
-    
+    }
+
     const fieldsToUpdate = Object.keys(editPost);
 
-    const validFields = fieldsToUpdate.filter(fieldToUpdate => {
+    const validFields = fieldsToUpdate.filter((fieldToUpdate) => {
       return window.SCHEMA.FIELDS_VALID_TO_UPDATE.indexOf(fieldToUpdate) !== -1;
-    })
+    });
 
-    if(validFields.length === 0) {
+    if (validFields.length === 0) {
       return false;
     }
-    
-    validFields.forEach(fieldToUpdate => {
+
+    validFields.forEach((fieldToUpdate) => {
       postToUpdate[fieldToUpdate] = editPost[fieldToUpdate];
     });
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', `/editPhotoPost/${id} `, false);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) {
+          return;
+        }
 
-    let xhr = new XMLHttpRequest();
-    xhr.open('PUT', '/editPhotoPost/' + id + ' ', false);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(postToUpdate));
-
-    return postService.validatePhotoPost(postToUpdate);
-  }
-    
-    
-  postService.removePhotoPost = id => {
-    const photoPost = postService.getPhotoPost(id);
-    if (!photoPost) {
-      return false;
-    } 
-    let xhr = new XMLHttpRequest();
-    xhr.open('DELETE', '/removePhotoPost/' + id + ' ', false);
-    xhr.send(id);
-    return true;
-  }
-    
-  postService.compareHashtag = (a, b) => {
-    for(var i = 0; i < a.length; i++) {
-      if(b.indexOf(a[i]) === -1) return false;
-    }
-    return true;
-  }
-
-  postService.liking = (id, user) => {
-    var arrLikes = postService.getPhotoPost(id).likes;
-    let oldUSer = arrLikes.find(element => {
-      return element === user;
+        if (xhr.status !== 200) {
+          console.log(`${xhr.status} : ${xhr.responseText || xhr.statusText}`);
+          reject(new Error('something bad happened'));
+        } else {
+          resolve(postService.validatePhotoPost(postToUpdate));
+        }
+      };
+      xhr.send(JSON.stringify(postToUpdate));
     });
-    if(oldUSer === undefined) {
-      arrLikes.push(user);
+  };
+
+
+  postService.removePhotoPost = (id) => {
+    return new Promise((resolve, reject) => {
+      const photoPost = postService.getPhotoPost(id);
+      if (!photoPost) {
+        return false;
+      }
+      const xhr = new XMLHttpRequest();
+      xhr.open('DELETE', `/removePhotoPost/${id} `, false);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) {
+          return;
+        }
+
+        if (xhr.status !== 200) {
+          console.log(`${xhr.status} : ${xhr.responseText || xhr.statusText}`);
+          reject(new Error('something bad happened'));
+        } else {
+          resolve(true);
+        }
+      };
+      xhr.send(id);
+    });
+  };
+
+  postService.compareHashtag = (a, b) => {
+    for (let i = 0; i < a.length; i += 1) {
+      if (b.indexOf(a[i]) === -1) return false;
     }
-    else {
-      arrLikes.pop(user);
+    return true;
+  };
+
+  postService.liking = async (id, user) => {
+    const arrLikes = await postService.getPhotoPost(id);
+    const oldUSer = arrLikes.likes.find(element => element === user);
+    if (oldUSer === undefined) {
+      arrLikes.likes.push(user);
+    } else {
+      arrLikes.likes.pop(user);
     }
-    return arrLikes;
-  }
- 
-  postService.easy = () => {
-    let xhr = new XMLHttpRequest();
-    xhr.open('GET', '/filter?skip=10', false);
-    xhr.send();
-  }
+    return arrLikes.likes;
+  };
+
+  postService.dateToString = (photoPost) => {
+    const date = photoPost.createdAt.getDate() > 10 ? photoPost.createdAt.getDate() : `0${photoPost.createdAt.getDate()}`;
+    const month = (+photoPost.createdAt.getMonth() + 1) > 10 ? (+photoPost.createdAt.getMonth() + 1) : `0${(+photoPost.createdAt.getMonth() + 1)}`;
+    const year = photoPost.createdAt.getFullYear();
+    return `${date}-${month}-${year}`;
+  };
 
   window.postService = postService;
-
-}(window.photoPosts, window.SCHEMA)
+}());
