@@ -8,9 +8,9 @@
     }
     const filterFields = Object.keys(filter).filter(filterField => (window.SCHEMA.FIELDS_VALID_TO_FILTER.indexOf(filterField) !== -1 && filter[filterField] !== ''));
 
-    return new Promise((resolve, reject) => {
+    /* return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', `/filter?skip=${skip}&top=${top}&filterFields=${filterFields.join(',')}`, false);
+  xhr.open('POST', `/filter?skip=${skip}&top=${top}&filterFields=${filterFields.join(',')}`, false);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onreadystatechange = function () {
         if (xhr.readyState !== 4) {
@@ -27,7 +27,34 @@
         }
       };
       xhr.send(JSON.stringify(filter));
-    });
+    }); */
+    let filteredPhotoPosts = [];
+
+    if (filter.hashtags[0] === '') {
+      filterFields.splice(filterFields.indexOf('hashtags'), 1);
+    }
+
+    filteredPhotoPosts = window.photoPosts.filter(photoPost =>
+      filterFields.every((filterField) => {
+        console.log(filterField);
+        if (filterField === 'hashtags') {
+          if (postService.compareHashtag(filter[filterField], photoPost[filterField])) return true;
+          return false;
+        }
+        if (filterField === 'createdAt') {
+          console.log(postService.dateToString(photoPost));
+          console.log(filter[filterField]);
+          if (postService.dateToString(photoPost) === filter[filterField]) return true;
+          return false;
+        }
+        if (photoPost[filterField] === filter[filterField]) return true;
+        return false;
+      }));
+
+    if (filteredPhotoPosts.length > 1) {
+      filteredPhotoPosts.sort((a, b) => b.createdAt - a.createdAt);
+    }
+    return filteredPhotoPosts.slice(skip, top);
   };
 
   postService.getPhotoPost = (id) => {
@@ -172,14 +199,16 @@
     } else {
       arrLikes.likes.pop(user);
     }
-    return arrLikes.likes;
+    const array = arrLikes.likes;
+    console.log(array + 2);
+    return array;
   };
 
   postService.dateToString = (photoPost) => {
     const date = photoPost.createdAt.getDate() > 10 ? photoPost.createdAt.getDate() : `0${photoPost.createdAt.getDate()}`;
     const month = (+photoPost.createdAt.getMonth() + 1) > 10 ? (+photoPost.createdAt.getMonth() + 1) : `0${(+photoPost.createdAt.getMonth() + 1)}`;
     const year = photoPost.createdAt.getFullYear();
-    return `${date}-${month}-${year}`;
+    return `${year}-${month}-${date}`;
   };
 
   window.postService = postService;

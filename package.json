@@ -18,11 +18,16 @@
   "homepage": "https://github.com/Fleverty/photogramExadelUP",
   "dependencies": {
     "body-parser": "^1.17.1",
+    "connect-redis": "^3.3.3",
     "diskdb": "^0.1.17",
     "express": "^4.15.2",
+    "express-session": "^1.15.6",
     "fs": "0.0.1-security",
     "http": "0.0.0",
-    "npm": "^5.8.0"
+    "npm": "^5.8.0",
+    "passport": "^0.4.0",
+    "passport-json": "^1.2.0",
+    "passport-local": "^1.0.0"
   },
   "description": "",
   "devDependencies": {
@@ -30,7 +35,7 @@
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.4.0",  
+    "eslint-plugin-react": "^7.4.0",
     "nodemon": "^1.17.3"
   }
 }

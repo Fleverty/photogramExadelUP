@@ -1,4 +1,4 @@
-(function (postService) {
+(function (postService, photoPosts) {
   const domService = {};
 
   domService.user = '';
@@ -46,15 +46,23 @@
     return view;
   };
 
+  domService.buttonMore = () => {
+    const view = '<div class = "btnmore" onclick = "window.pageListener.pagination()">' +
+    '<button>Show more</button>' +
+    '</div>';
+    return view;
+  };
+
   domService.showPosts = async (skip = 0, top = 10, filter) => {
     const array = await postService.getPhotoPosts(skip, top, filter);
+    const content = document.querySelector('div.content');
+    const buttonMore = document.querySelector('div.btnmore');
+    if (buttonMore) content.removeChild(buttonMore);
     array.forEach((elem) => {
       const detailPhotoPost = document.createElement('div');
       detailPhotoPost.id = elem.id;
       detailPhotoPost.className = 'post';
       detailPhotoPost.innerHTML = domService.detailPhotoPostView(elem);
-      const content = document.querySelector('div.content');
-      const buttonMore = document.querySelector('div.btnmore');
       content.insertBefore(detailPhotoPost, buttonMore);
     });
 
@@ -68,6 +76,11 @@
     arr.forEach((element) => {
       place.innerHTML += `<option>${element}</option>`;
     });
+
+    if (photoPosts.length > 10) {
+      content.innerHTML += domService.buttonMore();
+    }
+    domService.userConfig(domService.user);
   };
 
   domService.clean = () => {
@@ -116,6 +129,7 @@
     const content = document.querySelector('div.content');
     content.insertBefore(editElement, currentPost);
     content.removeChild(currentPost);
+    domService.userConfig(domService.user);
     return true;
   };
 
@@ -165,8 +179,9 @@
       place.insertBefore(newAdd, searchBar);
     }
 
-    domService.like = (id, user) => {
-      const likes = postService.liking(id, user);
+    domService.like = async (id, user) => {
+      const likes = await postService.liking(id, user);
+      console.log(likes);
       domService.editPost(id, { likes: likes });
       domService.userConfig(domService.user);
     };
@@ -175,4 +190,4 @@
   };
 
   window.domService = domService;
-}(window.postService));
+}(window.postService, window.photoPosts));

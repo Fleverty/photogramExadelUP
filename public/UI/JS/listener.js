@@ -91,28 +91,6 @@
     pageListener.deleteSignForm();
   };
 
-  pageListener.filterByAuthor = () => {
-    const author = document.querySelector('select.author-select').value;
-    domService.clean();
-    domService.showPosts(0, 10, { author: author });
-    domService.userConfig(domService.user);
-  };
-
-  pageListener.filterByHashtags = () => {
-    let hashtags = [];
-    hashtags = document.querySelector('input.search-hashtags').value.split(', ');
-    domService.clean();
-    domService.showPosts(0, 10, { hashtags: hashtags });
-    domService.userConfig(domService.user);
-  };
-
-  pageListener.filterByDate = () => {
-    const date = document.querySelector('input.date-search').value;
-    domService.clean();
-    domService.showPosts(0, 10, { createdAt: date });
-    domService.userConfig(domService.user);
-  };
-
   pageListener.filterByAll = () => {
     const author = document.querySelector('select.author-select').value;
     let hashtags = [];

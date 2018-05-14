@@ -1,4 +1,7 @@
 const express = require('express');
+const passport = require('passport');
+const session = require('express-session');
+const LocalStrategy = require('passport-local').Strategy;
 
 const app = express();
 const fs = require('fs');
@@ -6,6 +9,8 @@ const bodyParser = require('body-parser');
 
 const obj = JSON.parse(fs.readFileSync('./server/data/posts.json', 'utf8'));
 const user = JSON.parse(fs.readFileSync('./server/data/user.json', 'utf8')).user;
+const users = JSON.parse(fs.readFileSync('./server/data/user.json', 'utf8'));
+
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -19,7 +24,7 @@ app.get('/posts', (req, res) => {
   res.send(JSON.stringify(obj));
 });
 
-app.post('/filter', (req, res) => {
+/* app.post('/filter', (req, res) => {
   const skip = JSON.parse(req.query.skip);
   const top = JSON.parse(req.query.top);
   const filterFields = req.query.filterFields.split(',');
@@ -28,6 +33,50 @@ app.post('/filter', (req, res) => {
   let filteredPhotoPosts = [];
 
   if (filter.hashtags[0] === '') {
+    filterFields.splice(filterFields.indexOf('hashtags'), 1);
+  }
+
+  /* filteredPhotoPosts = obj.filter(photoPost =>
+    /* filterFields.every((filterField) => {
+      console.log(filterField);
+      if (filterField === 'hastags') compareHashtags(filter[filterField], photoPost[filterField]);
+      if (filterField === 'createdAt') {
+        console.log(dateString(photoPost));
+        console.log(filter[filterField]);
+        if (dateString(photoPost) === filter[filterField]) return true;
+        return false;
+      }
+      if (photoPost[filterField] === filter[filterField]) return true;
+      return false;
+    }));
+  console.log(filterFields);
+  console.log(filteredPhotoPosts);
+  /* if (filter.hashtags[0] === '') {
+    filterFields.splice(filterFields.indexOf('hashtags'), 1);
+  }
+  if (filterFields.indexOf('hashtags') !== -1) {
+    filteredPhotoPosts.filter((photoPost) => {
+      for (let i = 0; i < filter.hashtags.length; i += 1) {
+        if (photoPost.hashtags.indexOf(filter.hashtags[i]) === -1) return false;
+      }
+      return true;
+    });
+    filterFields.splice(filterFields.indexOf('hashtags'), 1);
+  }
+  if (filterFields.indexOf('createdAt') !== -1) {
+    filteredPhotoPosts.filter((photoPost) => {
+      if (window.photoPosts.dateString(photoPost) === filter.createdAt) return true;
+      return false;
+    });
+  }
+  if (filterFields.indexOf('author') !== -1) {
+    filteredPhotoPosts.filter((photoPost) => {
+      if (photoPost.author === filter.author) return true;
+      return false;
+    });
+  }
+
+  /* if (filter.hashtags[0] === '') {
     filterFields.splice(filterFields.indexOf('hashtags'), 1);
   }
 
@@ -47,13 +96,12 @@ app.post('/filter', (req, res) => {
     filteredPhotoPosts = filteredByHashtag.filter(photoPost =>
       filterFields.every(filterField => photoPost[filterField] === filter[filterField]));
   }
-
   if (filteredPhotoPosts.length > 1) {
     filteredPhotoPosts.sort((a, b) => b.createdAt - a.createdAt);
   }
 
   res.send(JSON.stringify(filteredPhotoPosts.slice(skip, top)));
-});
+}); */
 
 app.get('/posts/:id', (req, res) => {
   res.send(JSON.stringify(obj.find(photoPost => photoPost.id === req.params.id)));
@@ -98,4 +146,3 @@ app.post('/updateUser', (req, res) => {
 app.listen(3000, (data) => {
   console.log(`Server now listening on port: 3000 ${data}`);
 });
-

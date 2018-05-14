@@ -1,6 +1,5 @@
 let photoPosts = [];
 
-
 const xhr = new XMLHttpRequest();
 xhr.open('GET', '/posts', false);
 xhr.send();
@@ -18,6 +17,5 @@ photoPosts.indexOf = (element) => {
   }
   return -1;
 };
-
 
 window.photoPosts = photoPosts;
