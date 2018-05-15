@@ -62,6 +62,8 @@
       if (!id) {
         return;
       }
+      xhr.send(JSON.stringify(filter));
+    })
 
       const xhr = new XMLHttpRequest();
       xhr.open('GET', `/posts/${id} `, false);
