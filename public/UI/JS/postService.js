@@ -28,8 +28,6 @@
       };
       xhr.send(JSON.stringify(filter));
     }); */
-
-
     let filteredPhotoPosts = [];
 
     if (filter.hashtags[0] === '') {
