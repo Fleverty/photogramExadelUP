@@ -24,7 +24,6 @@ app.get('/posts', (req, res) => {
   res.send(JSON.stringify(obj));
 });
 
-
 /* app.post('/filter', (req, res) => {
   const skip = JSON.parse(req.query.skip);
   const top = JSON.parse(req.query.top);
@@ -61,7 +60,6 @@ app.get('/posts', (req, res) => {
         if (photoPost.hashtags.indexOf(filter.hashtags[i]) === -1) return false;
       }
       return true;
-
     });
     filterFields.splice(filterFields.indexOf('hashtags'), 1);
   }
