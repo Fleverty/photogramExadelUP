@@ -1,0 +1,21 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "func-names": 0,
+    "arrow-body-style": 0,
+    "consistent-return": 0,
+    "object-shorthand": 0,
+    "no-unused-expressions": 0,
+    "quotes": ["error", "single"],
+    "comma-dangle": ["error", "always-multiline"],
+    "prefer-destructuring": ["error", {
+      "array": false,
+      "object": false
+    }],
+    "valid-typeof": 0,
+    "no-console": 0
+  },
+  "env": {
+    "browser": true
+  }
+}
