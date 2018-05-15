@@ -1,4 +1,3 @@
-
 (function (postService, photoPosts) {
   const domService = {};
 
@@ -72,7 +71,6 @@
       if (!arr.includes(element.author)) arr.push(element.author);
     });
 
-
     const place = document.querySelector('select.author-select');
     place.innerHTML = '';
     arr.forEach((element) => {
@@ -90,12 +88,10 @@
       const content = document.querySelector('div.content');
       content.removeChild(elem);
     });
-
   };
 
   domService.addPost = async (photoPost) => {
     if ((await postService.addPhotoPost(photoPost)) === false) {
-
       return false;
     }
 
@@ -110,7 +106,7 @@
   };
 
   domService.deletePost = async (id) => {
-    if ((await postService.removePhotoPost(id)) === false) 
+    if ((await postService.removePhotoPost(id)) === false) {
       return false;
     }
 
