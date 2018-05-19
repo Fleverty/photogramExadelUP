@@ -36,14 +36,11 @@
 
     filteredPhotoPosts = window.photoPosts.filter(photoPost =>
       filterFields.every((filterField) => {
-        console.log(filterField);
         if (filterField === 'hashtags') {
           if (postService.compareHashtag(filter[filterField], photoPost[filterField])) return true;
           return false;
         }
         if (filterField === 'createdAt') {
-          console.log(postService.dateToString(photoPost));
-          console.log(filter[filterField]);
           if (postService.dateToString(photoPost) === filter[filterField]) return true;
           return false;
         }

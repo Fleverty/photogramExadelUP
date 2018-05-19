@@ -51,7 +51,7 @@
 
   pageListener.pagination = () => {
     const skip = document.querySelectorAll('div.post').length;
-    domService.showPosts(skip, skip + 10);
+    domService.showPosts(skip, skip + 5);
   };
 
   pageListener.deletePost = (event) => {

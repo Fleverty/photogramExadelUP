@@ -18,7 +18,7 @@
   domService.detailPhotoPostView = (photoPost) => {
     let hashtags = '';
     for (let i = 0; i < photoPost.hashtags.length; i += 1) {
-      hashtags += `#${photoPost.hashtags[i]}`;
+      hashtags += `#${photoPost.hashtags[i]} `;
     }
 
     const view =
@@ -53,17 +53,23 @@
     return view;
   };
 
-  domService.showPosts = async (skip = 0, top = 10, filter) => {
+  domService.showPosts = async (skip = 0, top = 5, filter) => {
     const array = await postService.getPhotoPosts(skip, top, filter);
     const content = document.querySelector('div.content');
     const buttonMore = document.querySelector('div.btnmore');
-    if (buttonMore) content.removeChild(buttonMore);
+    if (buttonMore) {
+      content.removeChild(buttonMore);
+    }
     array.forEach((elem) => {
       const detailPhotoPost = document.createElement('div');
       detailPhotoPost.id = elem.id;
       detailPhotoPost.className = 'post';
       detailPhotoPost.innerHTML = domService.detailPhotoPostView(elem);
-      content.insertBefore(detailPhotoPost, buttonMore);
+      if (array.length < 5) {
+        content.appendChild(detailPhotoPost);
+      } else {
+        content.insertBefore(detailPhotoPost, buttonMore);
+      }
     });
 
     const arr = [];
@@ -77,8 +83,11 @@
       place.innerHTML += `<option>${element}</option>`;
     });
 
-    if (photoPosts.length > 10) {
+    if (photoPosts.length > 5) {
       content.innerHTML += domService.buttonMore();
+    }
+    if (photoPosts.length === document.querySelectorAll('div.post').length) {
+      content.querySelector('div.btnmore').remove();
     }
     domService.userConfig(domService.user);
   };
