@@ -15,6 +15,26 @@
     xhr.send(JSON.stringify({ user: domService.user }));
   };
 
+  domService.logIn = (username, password) => {
+    return new Promise((resolve, reject) => {
+      xhr = new XMLHttpRequest();
+      xhr.open('POST', '/login', true);
+      xhr.setRequestHeader('Content-type', 'application/json');
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) return;
+
+        if (xhr.status !== 200) {
+          console.log(`${xhr.status}:${xhr.responseText || xhr.statusText}`);
+          reject(new Error('Invalid query'));
+        }
+        resolve(xhr.responseText);
+      };
+
+      xhr.send(JSON.stringify({ username: username, password: password }));
+    });
+  };
+
   domService.detailPhotoPostView = (photoPost) => {
     let hashtags = '';
     for (let i = 0; i < photoPost.hashtags.length; i += 1) {

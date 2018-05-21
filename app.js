@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
-const session = require('express-session');
-const LocalStrategy = require('passport-local').Strategy;
+const JsonStrategy = require('passport-json').Strategy;
+const crypto = require('crypto');
 
 const app = express();
 const fs = require('fs');
@@ -9,12 +9,99 @@ const bodyParser = require('body-parser');
 
 const obj = JSON.parse(fs.readFileSync('./server/data/posts.json', 'utf8'));
 const user = JSON.parse(fs.readFileSync('./server/data/user.json', 'utf8')).user;
-const users = JSON.parse(fs.readFileSync('./server/data/user.json', 'utf8'));
+const users = JSON.parse(fs.readFileSync('./server/data/users.json', 'utf8'));
 
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+const getRandomString = (length) => {
+  return crypto.randomBytes(Math.ceil(length / 2))
+    .toString('hex') /** convert to hexadecimal format */
+    .slice(0, length); /** return required number of characters */
+};
+
+const sha512 = (password, salt) => {
+  const hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
+  hash.update(password);
+  const value = hash.digest('hex');
+  return {
+    salt: salt,
+    passwordHash: value,
+  };
+};
+
+const saltHashPassword = (userpassword) => {
+  const salt = getRandomString(16); /** Gives us salt of length 16 */
+  return sha512(userpassword, salt);
+};
+
+const getUserPassword = (login) => {
+  const currentUser = users.find(element => element.username === login);
+  const password = currentUser.password;
+  if (password !== undefined) {
+    console.log(password);
+    return password;
+  }
+  return false;
+};
+
+const verifyPassword = function (login, password) {
+  const userPassword = getUserPassword(login);
+  if (!userPassword) {
+    return false;
+  }
+  const hashPassword = sha512(password, userPassword.salt);
+  if (hashPassword.passwordHash !== userPassword.passwordHash) {
+    return false;
+  }
+  return { username: login, password: password };
+};
+
+passport.use(new JsonStrategy(
+  { passReqToCallback: true },
+
+  (req, username, password, done) => {
+    // let currentUser = users.find(element => element.username === username);
+
+    const currentUser = verifyPassword(username, password);
+
+    if (!currentUser) return done(null, false);
+
+
+    if (password !== currentUser.password) {
+      return done(null, false);
+    }
+
+    return done(null, currentUser);
+  }
+));
+
+passport.serializeUser((username, done) => {
+  done(null, username);
+});
+
+passport.deserializeUser((username, done) => {
+  console.log('asfasfd');
+  done(null, username);
+});
+
+app.post('/login', passport.authenticate('json', { failureRedirect: '/loginfail' }), (req, res) => {
+  res.sendStatus(200);
+});
+
+app.get('/loginfail', (req, res) => {
+  res.json(200, false);
+});
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.json(200, true);
+});
 
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/public/UI/index.html`);
@@ -29,76 +116,6 @@ app.get('/posts', (req, res) => {
   const top = JSON.parse(req.query.top);
   const filterFields = req.query.filterFields.split(',');
   const filter = req.body;
-
-  let filteredPhotoPosts = [];
-
-  if (filter.hashtags[0] === '') {
-    filterFields.splice(filterFields.indexOf('hashtags'), 1);
-  }
-
-  /* filteredPhotoPosts = obj.filter(photoPost =>
-    /* filterFields.every((filterField) => {
-      console.log(filterField);
-      if (filterField === 'hastags') compareHashtags(filter[filterField], photoPost[filterField]);
-      if (filterField === 'createdAt') {
-        console.log(dateString(photoPost));
-        console.log(filter[filterField]);
-        if (dateString(photoPost) === filter[filterField]) return true;
-        return false;
-      }
-      if (photoPost[filterField] === filter[filterField]) return true;
-      return false;
-    }));
-  console.log(filterFields);
-  console.log(filteredPhotoPosts);
-  /* if (filter.hashtags[0] === '') {
-    filterFields.splice(filterFields.indexOf('hashtags'), 1);
-  }
-  if (filterFields.indexOf('hashtags') !== -1) {
-    filteredPhotoPosts.filter((photoPost) => {
-      for (let i = 0; i < filter.hashtags.length; i += 1) {
-        if (photoPost.hashtags.indexOf(filter.hashtags[i]) === -1) return false;
-      }
-      return true;
-    });
-    filterFields.splice(filterFields.indexOf('hashtags'), 1);
-  }
-  if (filterFields.indexOf('createdAt') !== -1) {
-    filteredPhotoPosts.filter((photoPost) => {
-      if (window.photoPosts.dateString(photoPost) === filter.createdAt) return true;
-      return false;
-    });
-  }
-  if (filterFields.indexOf('author') !== -1) {
-    filteredPhotoPosts.filter((photoPost) => {
-      if (photoPost.author === filter.author) return true;
-      return false;
-    });
-  }
-
-  /* if (filter.hashtags[0] === '') {
-    filterFields.splice(filterFields.indexOf('hashtags'), 1);
-  }
-
-  if (filterFields.indexOf('hashtags') === -1) {
-    filteredPhotoPosts = obj.filter(photoPost =>
-      filterFields.every(filterField => photoPost[filterField] === filter[filterField]));
-  }
-
-  if (filterFields.indexOf('hashtags') !== -1) {
-    const filteredByHashtag = obj.filter((photoPost) => {
-      for (let i = 0; i < filter.hashtags.length; i += 1) {
-        if (photoPost.hashtags.indexOf(filter.hashtags[i]) === -1) return false;
-      }
-      return true;
-    });
-    filterFields.splice(filterFields.indexOf('hashtags'), 1);
-    filteredPhotoPosts = filteredByHashtag.filter(photoPost =>
-      filterFields.every(filterField => photoPost[filterField] === filter[filterField]));
-  }
-  if (filteredPhotoPosts.length > 1) {
-    filteredPhotoPosts.sort((a, b) => b.createdAt - a.createdAt);
-  }
 
   res.send(JSON.stringify(filteredPhotoPosts.slice(skip, top)));
 }); */
@@ -145,4 +162,8 @@ app.post('/updateUser', (req, res) => {
 
 app.listen(3000, (data) => {
   console.log(`Server now listening on port: 3000 ${data}`);
+});
+
+app.get('/qwerty', (req, res) => {
+  res.send(JSON.stringify(saltHashPassword('qwerty')));
 });

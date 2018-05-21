@@ -78,13 +78,11 @@
     document.body.removeChild(document.querySelector('div.signform'));
   };
 
-  pageListener.signIn = () => {
+  pageListener.signIn = async () => {
     const user = document.querySelector('input.inputlogin').value;
-    if (!document.querySelector('input.password').value === '1111') {
-      return false;
-    }
-    if (user === '') {
-      return false;
+    const password = document.querySelector('input.password').value;
+    if (await domService.logIn(user, password) !== 'OK') {
+      return;
     }
     window.domService.user = user;
     domService.userConfig(domService.user);

@@ -1,0 +1,14 @@
+[
+    {
+        "username" : "Wornpath",
+        "password" : {"salt":"9a9fa9431a8828ef","passwordHash":"645d6d79f5e7d5f5d1dc8bb611548e75ce3ddc82ff3677b33fef6127979ccc2e100bf04a6bcce5df920c408d6f09d003b07f096ecda6b14f2c96228f09a5aeea"}
+    },
+    {
+        "username" : "ACMilan",
+        "password" : {"salt":"9e19cdb7781cc691","passwordHash":"11a19237b535d89f3c61bc675bfb43220e5ac0c631a3b6913d171c0e9fadfe002b99297b657491399797e4fc82c5f98261fe870f4a2f0b5d0a32e868929f1de6"}
+    },
+    {
+        "username" : "ernesto_gavara",
+        "password" : {"salt":"c0173d169472483f","passwordHash":"51d85b32606a13411e5ac6007921035e104c9078e7711ce38525323ff75ae92e547981881c97e9f6eb49cd642e894922a4afc777aca388c13354674a69fe39df"}
+    }
+]
