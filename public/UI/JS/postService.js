@@ -8,9 +8,9 @@
     }
     const filterFields = Object.keys(filter).filter(filterField => (window.SCHEMA.FIELDS_VALID_TO_FILTER.indexOf(filterField) !== -1 && filter[filterField] !== ''));
 
-    /* return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-  xhr.open('POST', `/filter?skip=${skip}&top=${top}&filterFields=${filterFields.join(',')}`, false);
+      xhr.open('POST', `/filter?skip=${skip}&top=${top}&filterFields=${filterFields.join(',')}`, false);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.onreadystatechange = function () {
         if (xhr.readyState !== 4) {
@@ -27,8 +27,8 @@
         }
       };
       xhr.send(JSON.stringify(filter));
-    }); */
-    let filteredPhotoPosts = [];
+    });
+    /* let filteredPhotoPosts = [];
 
     if (filter.hashtags[0] === '') {
       filterFields.splice(filterFields.indexOf('hashtags'), 1);
@@ -51,7 +51,7 @@
     if (filteredPhotoPosts.length > 1) {
       filteredPhotoPosts.sort((a, b) => b.createdAt - a.createdAt);
     }
-    return filteredPhotoPosts.slice(skip, top);
+    return filteredPhotoPosts.slice(skip, top); */
   };
 
   postService.getPhotoPost = (id) => {

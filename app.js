@@ -19,6 +19,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+const compareHashtag = (a, b) => {
+  for (let i = 0; i < a.length; i += 1) {
+    if (b.indexOf(a[i]) === -1) return false;
+  }
+  return true;
+};
+
+const dateToString = (photoPost) => {
+  const created = new Date(photoPost.createdAt);
+  const date = created.getDate() > 10 ? created.getDate() : `0${created.getDate()}`;
+  const month = (+created.getMonth() + 1) > 10 ? (+created.getMonth() + 1) : `0${(+created.getMonth() + 1)}`;
+  const year = created.getFullYear();
+  return `${year}-${month}-${date}`;
+};
+
 const getRandomString = (length) => {
   return crypto.randomBytes(Math.ceil(length / 2))
     .toString('hex') /** convert to hexadecimal format */
@@ -66,7 +81,6 @@ passport.use(new JsonStrategy(
   { passReqToCallback: true },
 
   (req, username, password, done) => {
-    // let currentUser = users.find(element => element.username === username);
 
     const currentUser = verifyPassword(username, password);
 
@@ -111,14 +125,38 @@ app.get('/posts', (req, res) => {
   res.send(JSON.stringify(obj));
 });
 
-/* app.post('/filter', (req, res) => {
+app.post('/filter', (req, res) => {
   const skip = JSON.parse(req.query.skip);
   const top = JSON.parse(req.query.top);
   const filterFields = req.query.filterFields.split(',');
   const filter = req.body;
 
+  let filteredPhotoPosts = [];
+
+  if (filter.hashtags[0] === '') {
+    filterFields.splice(filterFields.indexOf('hashtags'), 1);
+  }
+
+  filteredPhotoPosts = obj.filter(photoPost =>
+    filterFields.every((filterField) => {
+      if (filterField === 'hashtags') {
+        if (compareHashtag(filter[filterField], photoPost[filterField])) return true;
+        return false;
+      }
+      if (filterField === 'createdAt') {
+        if (dateToString(photoPost) === filter[filterField]) return true;
+        return false;
+      }
+      if (photoPost[filterField] === filter[filterField]) return true;
+      return false;
+    }));
+
+  if (filteredPhotoPosts.length > 1) {
+    filteredPhotoPosts.sort((a, b) => b.createdAt - a.createdAt);
+  }
+
   res.send(JSON.stringify(filteredPhotoPosts.slice(skip, top)));
-}); */
+});
 
 app.get('/posts/:id', (req, res) => {
   res.send(JSON.stringify(obj.find(photoPost => photoPost.id === req.params.id)));
@@ -162,8 +200,4 @@ app.post('/updateUser', (req, res) => {
 
 app.listen(3000, (data) => {
   console.log(`Server now listening on port: 3000 ${data}`);
-});
-
-app.get('/qwerty', (req, res) => {
-  res.send(JSON.stringify(saltHashPassword('qwerty')));
 });
