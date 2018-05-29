@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const JsonStrategy = require('passport-json').Strategy;
 const crypto = require('crypto');
+const mongoose = require('mongoose');
 
 const app = express();
 const fs = require('fs');
@@ -81,7 +82,6 @@ passport.use(new JsonStrategy(
   { passReqToCallback: true },
 
   (req, username, password, done) => {
-
     const currentUser = verifyPassword(username, password);
 
     if (!currentUser) return done(null, false);
@@ -198,6 +198,95 @@ app.post('/updateUser', (req, res) => {
   res.json(req.body);
 });
 
+async function connectDatabase() {
+  mongoose.Promise = global.Promise;
+  mongoose.connect('mongodb://localhost:27017/')
+    .then(() => {
+      console.log('Connected to database!!!');
+    })
+    .catch((err) => {
+      throw new Error(err);
+    });
+}
+
+const postSchema = new mongoose.Schema({
+  id: String,
+  description: String,
+  createdAt: String,
+  author: String,
+  photoLink: String,
+  hashtags: [String],
+  likes: [String],
+});
+
+const usersSchema = new mongoose.Schema({
+  username: String,
+  password: {
+    salt: String,
+    passwordHash: String,
+  },
+});
+
+const currentUserSchema = new mongoose.Schema({
+  currentUser: String,
+});
+
+const Post = mongoose.model('Post', postSchema);
+const Users = mongoose.model('User', usersSchema);
+const CurrentUser = mongoose.model('CurrentUser', currentUserSchema);
+
+function getMongoPost(id, callback) {
+  Post.find({}, (err, post) => {
+    if (err) throw err;
+    console.log(post);
+    fs.writeFileSync('./server/data/jsmongonon.json', JSON.stringify(post));
+  });
+}
+
+app.get('/test', (req, res) => {
+  // fs.writeFileSync('./server/data/jsmongonon.json', JSON.stringify(getMongoPosts()));
+  getMongoPost('714');
+});
+connectDatabase();
+
 app.listen(3000, (data) => {
   console.log(`Server now listening on port: 3000 ${data}`);
+  /* users.forEach((element) => {
+    const mongoUsers = new Users({
+      username: element.username,
+      password: { salt: element.password.salt, passwordHash: element.password.passwordHash },
+    });
+
+    return mongoUsers.save((err) => {
+      if (err) {
+        throw new Error(err);
+      }
+    });
+  }); */
+  /* obj.forEach((element) => {
+    const mongoPost = new Post({
+      id: element.id,
+      description: element.description,
+      createdAt: element.createdAt,
+      author: element.author,
+      photoLink: element.photoLink,
+      hashtags: element.hashtags,
+      likes: element.likes,
+    });
+
+    return mongoPost.save((err) => {
+      if (err) {
+        throw new Error(err);
+      }
+    });
+  }); */
+  /* const mongoCurrentUser = new CurrentUser({
+    currentUser: user,
+  });
+
+  return mongoCurrentUser.save((err) => {
+    if (err) {
+      throw new Error(err);
+    }
+  }); */
 });
